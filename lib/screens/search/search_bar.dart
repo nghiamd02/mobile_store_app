@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class MyTestClass extends StatefulWidget {
-  const MyTestClass({super.key});
+class CustomeSearchBar extends StatefulWidget {
+  const CustomeSearchBar({super.key});
 
   @override
-  State<MyTestClass> createState() => _MyTestClassState();
+  State<CustomeSearchBar> createState() => _CustomeSearchBarState();
 }
 
-class _MyTestClassState extends State<MyTestClass> {
+class _CustomeSearchBarState extends State<CustomeSearchBar> {
   late TextEditingController _searchController;
   List<String> myList = List.generate(20, (index) => "Iphone ${index + 1}");
   late List<String> _filterdList;

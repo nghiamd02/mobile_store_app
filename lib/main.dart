@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_store_app/test.dart';
+import 'package:mobile_store_app/screens/search/search_bar.dart';
 
 void main() => runApp(const MyApp());
 
@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: MyTestClass(),
+      home: CustomeSearchBar(),
     );
   }
 }
