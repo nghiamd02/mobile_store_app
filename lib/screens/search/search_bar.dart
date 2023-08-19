@@ -19,17 +19,6 @@ class _CustomeSearchBarState extends State<CustomeSearchBar> {
     _filterdList = myList;
   }
 
-  Widget notFoundText() {
-    return Expanded(
-      child: Center(
-        child: Text(
-          "Not Found!",
-          style: TextStyle(fontSize: 50),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -43,11 +32,11 @@ class _CustomeSearchBarState extends State<CustomeSearchBar> {
           body: Column(
         children: [
           Container(
-            padding: EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.only(top: 50),
             width: double.maxFinite,
             height: 162,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
@@ -66,7 +55,7 @@ class _CustomeSearchBarState extends State<CustomeSearchBar> {
               children: [
                 ListTile(
                   leading: IconButton(
-                    icon: Icon(Icons.menu),
+                    icon: const Icon(Icons.menu),
                     onPressed: () {
                       print("Icon Menu Pressed");
                     },
@@ -101,7 +90,7 @@ class _CustomeSearchBarState extends State<CustomeSearchBar> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 35, right: 20),
+                  padding: const EdgeInsets.only(left: 35, right: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -124,18 +113,6 @@ class _CustomeSearchBarState extends State<CustomeSearchBar> {
               ],
             ),
           ),
-          (_filterdList.isEmpty)
-              ? notFoundText()
-              : Expanded(
-                  child: ListView.builder(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  itemCount: _filterdList.length,
-                  itemBuilder: (context, index) => ListTile(
-                    leading: Text("${index + 1}"),
-                    title: Text(_filterdList[index]),
-                  ),
-                ))
         ],
       )),
     );
