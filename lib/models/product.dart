@@ -1,7 +1,3 @@
-import 'package:mobile_store_app/models/category.dart';
-import 'package:mobile_store_app/models/manufacturer.dart';
-import 'package:mobile_store_app/models/product_tech.dart';
-
 class Product {
   final String? name;
 
