@@ -3,6 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mobile_store_app/screens/screen_register.dart';
 
+import '../api/fetch_user.dart';
+import '../common_widget.dart';
+
 class ScreenLogin extends StatefulWidget {
   ScreenLogin({Key? key}) : super(key: key);
 
@@ -111,9 +114,14 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 ),
                 SizedBox(height: 15),
                 ElevatedButton(
-                  onPressed: () {
-                    _login();
-
+                  onPressed: () async {
+                    final user_api = new UserApi();
+                    var response = await user_api.login(_usernameController.text, _passwordController.text);
+                    if (response == 201) {
+                      _showLoginSuccessDialog();
+                    } else {
+                      _showLoginFailedDialog();
+                    }
                   },
                   style: ButtonStyle(
                     minimumSize: MaterialStateProperty.all(
@@ -158,7 +166,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                   ]),
                   TextButton(
                     onPressed: () {
-                      _showForgotPasswordEmail(context);
+                      showForgotPasswordEmail(context);
                     },
                     style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -259,27 +267,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
     );
   }
 
-  Future<void> _login() async {
-    //get data from form
-    final username = _usernameController.text;
-    final password = _passwordController.text;
 
-    final body = jsonEncode({
-      "email": username,
-      "password": password,
-    });
-
-    const url = "http://45.117.170.206:60/apis/login/";
-    final uri = Uri.parse(url);
-    final response = await http.post(uri, body: body, headers:  {"Content-Type": "application/json"});
-    print(response.body);
-
-    if (response.statusCode == 201) {
-       _showLoginSuccessDialog();
-    } else {
-       _showLoginFailedDialog();
-    }
-  }
 
 
   void _showLoginSuccessDialog() {
@@ -320,382 +308,5 @@ class _ScreenLoginState extends State<ScreenLogin> {
     );
   }
 
-
-
-
 }
 
-void _showForgotPasswordEmail(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(0.0),
-        ),
-        child: Container(
-          padding: EdgeInsets.all(0.0),
-          width: 340,
-          height: 200,
-
-          child: Column(
-              children: [
-                Container(
-                  width: 300,
-                  height: 50,
-                  color: Color.fromRGBO(190, 190, 190, 0.7),
-                  child: Center(
-                    child: Text(
-                      'FORGOT PASSWORD',
-                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                  )
-                  ),
-
-                SizedBox(height: 10),
-
-                Text(" Please enter your email"),
-
-                SizedBox(height: 10),
-
-                Center(
-                  child: Container(
-                    width: 240,
-                    height: 35,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: TextFormField(
-                    decoration: InputDecoration(
-                    hintText: 'email',
-                      hintStyle: TextStyle(fontSize: 12.0, color: Colors.green),
-                      border: InputBorder.none,
-                    ),
-                    onChanged: (value) {
-                      print('Gía trị nhập liệu: $value');
-                    },
-                  ),
-                    ),
-                  ),
-
-                ),
-
-                SizedBox(height: 19),
-
-                Container(
-                  width: 200,
-                  height: 33,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 83,
-                        height: 33,
-                        decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 0, right: 0, bottom: 0,top: 0),
-                          child: TextButton(
-                            child: Text('Cancel', style: TextStyle(fontSize:12,color: Colors.white, fontWeight: FontWeight.w300),),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ),
-                      ),
-
-                      Container(
-                        width: 83,
-                        height: 33,
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 0, right: 0, bottom: 0,top: 0),
-                          child: TextButton(
-                            child: Text('Confirm', style: TextStyle(fontSize:12, color: Colors.white, fontWeight: FontWeight.w300),),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              _showForgotPasswordOtp(context);// Handle submit logic here
-
-                            },
-                          ),
-                        ),
-                      ),
-
-                    ],
-                  ),
-                ),
-              ],),
-        )
-      );
-    },
-  );
-}
-
-void _showForgotPasswordOtp(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0.0),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(0.0),
-            width: 350,
-            height: 260,
-
-            child: Column(
-              children: [
-                Container(
-                    width: 350,
-                    height: 50,
-                    color: Color.fromRGBO(190, 190, 190, 0.7),
-                    child: Center(
-                      child: Text(
-                        'FORGOT PASSWORD',
-                        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                ),
-
-                SizedBox(height: 8),
-
-                Container(
-                  alignment: Alignment.center,
-                    child: Text("Verify code has been sent to your phone number.",
-                      textAlign: TextAlign.center, // Căn giữa theo chiều ngang
-                      softWrap: true, // Cho phép chữ tự động xuống hàng),
-                )),
-
-                Text("Please confirm it"),
-
-                SizedBox(height: 8),
-
-                Center(
-                  child: Container(
-                    width: 240,
-                    height: 35,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'OPT',
-                          hintStyle: TextStyle(fontSize: 12.0, color: Colors.green),
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {
-                          print('Gía trị nhập liệu: $value');
-                        },
-                      ),
-                    ),
-                  ),
-
-                ),
-
-                SizedBox(height: 8),
-
-                Text(" OPT code expires later 59 seconds"),
-
-                SizedBox(height: 8),
-
-                Container(
-                  width: 200,
-                  height: 33,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 83,
-                        height: 33,
-                        decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 0, right: 0, bottom: 0,top: 0),
-                          child: TextButton(
-                            child: Text('Cancel', style: TextStyle(fontSize:12,color: Colors.white, fontWeight: FontWeight.w300),),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ),
-                      ),
-
-                      Container(
-                        width: 83,
-                        height: 33,
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 0, right: 0, bottom: 0,top: 0),
-                          child: TextButton(
-                            child: Text('Confirm', style: TextStyle(fontSize:12, color: Colors.white, fontWeight: FontWeight.w300),),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              _showForgotPasswordCreatNew(context)// Handle submit logic here
-                              ;
-                            },
-                          ),
-                        ),
-                      ),
-
-                    ],
-                  ),
-                ),
-              ],),
-          )
-      );
-    },
-  );
-}
-
-void _showForgotPasswordCreatNew(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0.0),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(0.0),
-            width: 340,
-            height: 230,
-
-            child: Column(
-              children: [
-                Container(
-                    width: 340,
-                    height: 50,
-                    color: Color.fromRGBO(190, 190, 190, 0.7),
-                    child: Center(
-                      child: Text(
-                        'FORGOT PASSWORD',
-                        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                ),
-
-                SizedBox(height: 8),
-
-                Text(" Please enter your new password"),
-
-                SizedBox(height: 8),
-
-                Center(
-                  child: Container(
-                    width: 240,
-                    height: 35,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          hintStyle: TextStyle(fontSize: 12.0, color: Colors.green),
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {
-                          print('Gía trị nhập liệu: $value');
-                        },
-                      ),
-                    ),
-                  ),
-
-                ),
-
-                SizedBox(height: 8),
-
-                Center(
-                  child: Container(
-                    width: 240,
-                    height: 35,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Repeat Password',
-                          hintStyle: TextStyle(fontSize: 12.0, color: Colors.green),
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {
-                          print('Gía trị nhập liệu: $value');
-                        },
-                      ),
-                    ),
-                  ),
-
-                ),
-
-                SizedBox(height: 12),
-
-                Container(
-                  width: 200,
-                  height: 33,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 83,
-                        height: 33,
-                        decoration: BoxDecoration(
-                            color: Colors.redAccent,
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 0, right: 0, bottom: 0,top: 0),
-                          child: TextButton(
-                            child: Text('Cancel', style: TextStyle(fontSize:12,color: Colors.white, fontWeight: FontWeight.w300),),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ),
-                      ),
-
-                      Container(
-                        width: 83,
-                        height: 33,
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 0, right: 0, bottom: 0,top: 0),
-                          child: TextButton(
-                            child: Text('Confirm', style: TextStyle(fontSize:12, color: Colors.white, fontWeight: FontWeight.w300),),
-                            onPressed: () {
-                              // Handle submit logic here
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ),
-                      ),
-
-                    ],
-                  ),
-                ),
-              ],),
-          )
-      );
-    },
-  );
-}
