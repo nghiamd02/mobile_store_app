@@ -1,15 +1,109 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_store_app/models/address.dart';
+import 'package:mobile_store_app/repo/address_repo.dart';
 
-class AddressList extends StatelessWidget {
+class AddressList extends StatefulWidget {
   const AddressList({super.key});
+
+  @override
+  State<AddressList> createState() => _AddressListState();
+}
+
+class _AddressListState extends State<AddressList> {
+  late List<Address> addressList;
+
+  @override
+  void initState() {
+    super.initState();
+    getAddressList();
+  }
+
+  void getAddressList() async {
+    addressList = await AddressRepository.getAllAddresses();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(9),
-      color: Colors.white,
-      width: double.maxFinite,
-      height: 167,
-    );
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        margin: const EdgeInsets.all(9),
+        color: Colors.white,
+        width: double.maxFinite,
+        height: 167,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "ADDRESS",
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            Expanded(
+                child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "${addressList[index].nameReceiver} | ${addressList[index].phoneReceiver}"),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(addressList[index].location!),
+                              Row(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 22,
+                                    width: 69,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.green),
+                                        color: Colors.grey[200]),
+                                    child: Text(
+                                      "Default",
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 18,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 22,
+                                    width: 69,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.green),
+                                        color: Colors.grey[200]),
+                                    child: Text(
+                                      "Default",
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          Expanded(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () {}, icon: Icon(Icons.edit)),
+                              IconButton(
+                                  onPressed: () {}, icon: Icon(Icons.delete))
+                            ],
+                          ))
+                        ],
+                      );
+                    },
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemCount: addressList.length))
+          ],
+        ));
   }
 }
