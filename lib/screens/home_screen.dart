@@ -6,7 +6,7 @@ import 'package:mobile_store_app/widget/text_format/subtitle_text.dart';
 import 'package:mobile_store_app/widget/text_format/title_text.dart';
 import 'package:mobile_store_app/screens/detail_screen.dart';
 
-class HomeScreen extends StatefulWidget{
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
@@ -35,20 +35,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: images.length,
                     itemBuilder: (_, index, realIndex) {
                       return Image.network(
-                          images[index], fit: BoxFit.cover,
+                        images[index],
+                        fit: BoxFit.cover,
                       );
                     },
                     options: CarouselOptions(
                       height: 200,
-                      aspectRatio: 16/9,
+                      aspectRatio: 16 / 9,
                       enlargeCenterPage: true,
                       autoPlay: true,
                       autoPlayCurve: Curves.fastOutSlowIn,
                       enableInfiniteScroll: true,
-                      autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 800),
                       viewportFraction: 1.0,
-                    )
-                ),
+                    )),
               ),
               Align(
                 alignment: const AlignmentDirectional(-1, 0),
@@ -69,7 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(48, 0, 48, 0),
                   child: GridView(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 11,
                       mainAxisSpacing: 11,
@@ -83,8 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         child: Column(
                           children: [
                             Expanded(
@@ -92,11 +93,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const DetailScreen()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DetailScreen()),
                                   );
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                                  padding: const EdgeInsets.only(
+                                      top: 8, bottom: 8, left: 10, right: 10),
                                   child: Image.network(
                                     'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_12.png',
                                     width: 126,
@@ -105,9 +109,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            TitleText(text: "Name Product", size: 12,),
-                            Subtitle(text: "Price", size: 15,),
-                            const SizedBox(height: 16,),
+                            TitleText(
+                              text: "Name Product",
+                              size: 12,
+                            ),
+                            Subtitle(
+                              text: "Price",
+                              size: 15,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                           ],
                         ),
                       ),
@@ -117,8 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         child: Column(
                           children: [
                             Expanded(
@@ -126,11 +137,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const DetailScreen()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DetailScreen()),
                                   );
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                                  padding: const EdgeInsets.only(
+                                      top: 8, bottom: 8, left: 10, right: 10),
                                   child: Image.network(
                                     'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_12.png',
                                     width: 126,
@@ -139,9 +153,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            TitleText(text: "Name Product", size: 12,),
-                            Subtitle(text: "Price", size: 15,),
-                            const SizedBox(height: 16,),
+                            TitleText(
+                              text: "Name Product",
+                              size: 12,
+                            ),
+                            Subtitle(
+                              text: "Price",
+                              size: 15,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                           ],
                         ),
                       ),
@@ -151,8 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         child: Column(
                           children: [
                             Expanded(
@@ -160,11 +181,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const DetailScreen()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DetailScreen()),
                                   );
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                                  padding: const EdgeInsets.only(
+                                      top: 8, bottom: 8, left: 10, right: 10),
                                   child: Image.network(
                                     'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_12.png',
                                     width: 126,
@@ -173,9 +197,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            TitleText(text: "Name Product", size: 12,),
-                            Subtitle(text: "Price", size: 15,),
-                            const SizedBox(height: 16,),
+                            TitleText(
+                              text: "Name Product",
+                              size: 12,
+                            ),
+                            Subtitle(
+                              text: "Price",
+                              size: 15,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                           ],
                         ),
                       ),
@@ -185,8 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         child: Column(
                           children: [
                             Expanded(
@@ -194,11 +225,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const DetailScreen()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DetailScreen()),
                                   );
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                                  padding: const EdgeInsets.only(
+                                      top: 8, bottom: 8, left: 10, right: 10),
                                   child: Image.network(
                                     'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_12.png',
                                     width: 126,
@@ -207,9 +241,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            TitleText(text: "Name Product", size: 12,),
-                            Subtitle(text: "Price", size: 15,),
-                            const SizedBox(height: 16,),
+                            TitleText(
+                              text: "Name Product",
+                              size: 12,
+                            ),
+                            Subtitle(
+                              text: "Price",
+                              size: 15,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                           ],
                         ),
                       ),
@@ -219,8 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         child: Column(
                           children: [
                             Expanded(
@@ -228,11 +269,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const DetailScreen()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DetailScreen()),
                                   );
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                                  padding: const EdgeInsets.only(
+                                      top: 8, bottom: 8, left: 10, right: 10),
                                   child: Image.network(
                                     'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_12.png',
                                     width: 126,
@@ -241,9 +285,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            TitleText(text: "Name Product", size: 12,),
-                            Subtitle(text: "Price", size: 15,),
-                            const SizedBox(height: 16,),
+                            TitleText(
+                              text: "Name Product",
+                              size: 12,
+                            ),
+                            Subtitle(
+                              text: "Price",
+                              size: 15,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                           ],
                         ),
                       ),
@@ -253,8 +305,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         child: Column(
                           children: [
                             Expanded(
@@ -262,11 +313,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const DetailScreen()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DetailScreen()),
                                   );
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                                  padding: const EdgeInsets.only(
+                                      top: 8, bottom: 8, left: 10, right: 10),
                                   child: Image.network(
                                     'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_12.png',
                                     width: 126,
@@ -275,9 +329,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            TitleText(text: "Name Product", size: 12,),
-                            Subtitle(text: "Price", size: 15,),
-                            const SizedBox(height: 16,),
+                            TitleText(
+                              text: "Name Product",
+                              size: 12,
+                            ),
+                            Subtitle(
+                              text: "Price",
+                              size: 15,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                           ],
                         ),
                       ),
@@ -287,8 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         child: Column(
                           children: [
                             Expanded(
@@ -296,11 +357,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const DetailScreen()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DetailScreen()),
                                   );
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                                  padding: const EdgeInsets.only(
+                                      top: 8, bottom: 8, left: 10, right: 10),
                                   child: Image.network(
                                     'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_12.png',
                                     width: 126,
@@ -309,9 +373,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            TitleText(text: "Name Product", size: 12,),
-                            Subtitle(text: "Price", size: 15,),
-                            const SizedBox(height: 16,),
+                            TitleText(
+                              text: "Name Product",
+                              size: 12,
+                            ),
+                            Subtitle(
+                              text: "Price",
+                              size: 15,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                           ],
                         ),
                       ),
@@ -321,8 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         child: Column(
                           children: [
                             Expanded(
@@ -330,11 +401,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const DetailScreen()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DetailScreen()),
                                   );
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
+                                  padding: const EdgeInsets.only(
+                                      top: 8, bottom: 8, left: 10, right: 10),
                                   child: Image.network(
                                     'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_12.png',
                                     width: 126,
@@ -343,9 +417,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            TitleText(text: "Name Product", size: 12,),
-                            Subtitle(text: "Price", size: 15,),
-                            const SizedBox(height: 16,),
+                            TitleText(
+                              text: "Name Product",
+                              size: 12,
+                            ),
+                            Subtitle(
+                              text: "Price",
+                              size: 15,
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                           ],
                         ),
                       ),
