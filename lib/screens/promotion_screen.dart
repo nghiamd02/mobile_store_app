@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_store_app/bloc/promotion_cubit.dart';
 import 'package:mobile_store_app/repo/promotion_repo.dart';
+import 'package:mobile_store_app/screens/search/search_bar.dart';
+import 'package:mobile_store_app/screens/your_information/your_information_screen.dart';
 
 import '../bloc/promotion_state.dart';
 import '../models/promotion.dart';
@@ -58,22 +60,7 @@ class __PromotionPageState extends State<_PromotionPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 162,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: const Color(0xffeeeeee),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-              ),
+              CustomSearchBar(),
               const SizedBox(
                 height: 8,
               ),
@@ -92,8 +79,9 @@ class __PromotionPageState extends State<_PromotionPage> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context,
-                            '/your_information'); // Điều hướng đến route "Your Information"
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => YourInformationScreen(),
+                        )); // Điều hướng đến route "Your Information"
                       },
                       child: Column(
                         children: [
