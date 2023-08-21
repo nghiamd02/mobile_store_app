@@ -3,6 +3,7 @@ import 'package:mobile_store_app/screens/search/search_bar.dart';
 import 'package:mobile_store_app/screens/your_information/address_list.dart';
 import 'package:mobile_store_app/screens/your_information/nav_bar_user_infor.dart';
 import 'package:mobile_store_app/screens/your_information/user_information.dart';
+import 'package:mobile_store_app/widget/bottom_navigation.dart';
 
 class YourInformationScreen extends StatelessWidget {
   const YourInformationScreen({super.key});
@@ -26,6 +27,7 @@ class YourInformationScreen extends StatelessWidget {
           Expanded(child: AddressList())
         ],
       ),
+      // bottomNavigationBar: BottomNavigation(),
     );
   }
 }
