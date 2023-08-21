@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_store_app/screens/cart_screen.dart';
 import 'package:mobile_store_app/screens/detail_screen.dart';
 import 'package:mobile_store_app/screens/home_screen.dart';
+import 'package:mobile_store_app/screens/your_information/your_information_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   List pages = [
     HomeScreen(),
     CartScreen(),
-    DetailScreen(),
+    YourInformationScreen(),
   ];
 
   int currentIndex = 0;

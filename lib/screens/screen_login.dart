@@ -103,6 +103,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 SizedBox(height: 15),
                 TextFormField(
                   controller: _passwordController,
+                  obscureText: true,
                   decoration: InputDecoration(
                     hintText: 'Password',
                     border: OutlineInputBorder(),
