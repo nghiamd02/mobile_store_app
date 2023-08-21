@@ -18,21 +18,6 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         body: ScreenLogin(),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.arrow_back_ios_new_sharp), label: ""),
-            BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ""),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person_rounded), label: ""),
-          ],
-          currentIndex: _currentIndexPage,
-          onTap: (value) {
-            setState(() {
-              _currentIndexPage = value;
-            });
-          },
-        ),
       ),
     );
   }

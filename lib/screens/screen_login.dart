@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:mobile_store_app/screens/home_screen.dart';
 import 'package:mobile_store_app/screens/screen_register.dart';
+import 'package:mobile_store_app/widget/bottom_navigation.dart';
 
 import '../api/fetch_user.dart';
 import '../common_widget.dart';
@@ -19,7 +21,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
@@ -33,8 +34,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: SingleChildScrollView(
-              child: Column(
+      body: SingleChildScrollView(
+          child: Column(
         children: [
           // dùng Pading không thể thay đổi màu nên, vì vậy phải dùng container
           Container(
@@ -116,7 +117,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 ElevatedButton(
                   onPressed: () async {
                     final user_api = new UserApi();
-                    var response = await user_api.login(_usernameController.text, _passwordController.text);
+                    var response = await user_api.login(
+                        _usernameController.text, _passwordController.text);
                     if (response == 201) {
                       _showLoginSuccessDialog();
                     } else {
@@ -267,9 +269,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
     );
   }
 
-
-
-
   void _showLoginSuccessDialog() {
     showDialog(
       context: context,
@@ -280,6 +279,9 @@ class _ScreenLoginState extends State<ScreenLogin> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => BottomNavigation(),
+                ));
               },
               child: Text('Close'),
             ),
@@ -307,6 +309,4 @@ class _ScreenLoginState extends State<ScreenLogin> {
       },
     );
   }
-
 }
-
