@@ -4,12 +4,13 @@ import 'dart:convert';
 
 import '../models/promotion.dart';
 
-class PromotionRepository{
+class PromotionRepository {
   static const String urlRead = "http://45.117.170.206:60/apis/promotion";
 
   static const int statusCode200 = 200;
 
-  static const String bearerToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdW5yaXNlMjQxMTk2QGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJSb2xlX0N1c3RvbWVyIn1dLCJpYXQiOjE2OTI1NDQ3OTgsImV4cCI6MTY5MjU2Mjc5OH0.gZIcEXrRnehJjtV0IMepIWskhygRoIFBq3chxpv683c";
+  static const String bearerToken =
+      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUm9sZV9BZG1pbiJ9XSwiaWF0IjoxNjkyNjA3ODk3LCJleHAiOjE2OTI2MjU4OTd9.MlhCF0Eql7RSuSEHRPXkdkD5XqmUPhhJmwg3CZcaQoo";
 
   //get all promotion
   Future<ApiResponse> getAllPromotions(int no, int limit) async {
@@ -23,5 +24,4 @@ class PromotionRepository{
 
     throw Exception('Failed to load promotion data ${response.statusCode}');
   }
-
 }
