@@ -11,9 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: BottomNavigation()
-      ),
+      home: Scaffold(body: BottomNavigation()),
     );
   }
 }
@@ -51,7 +49,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
         onTap: onTap,
         items: [
           BottomNavigationBarItem(label: "Home", icon: Icon(Icons.house)),
-          BottomNavigationBarItem(label: "Cart", icon: Icon(Icons.shopping_cart)),
+          BottomNavigationBarItem(
+              label: "Cart", icon: Icon(Icons.shopping_cart)),
           BottomNavigationBarItem(label: "Account", icon: Icon(Icons.person)),
         ],
       ),
