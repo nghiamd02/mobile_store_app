@@ -75,12 +75,12 @@ class _AddressListState extends State<AddressList> {
                                     height: 22,
                                     width: 69,
                                     decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.green),
+                                        border: Border.all(color: Colors.red),
                                         color: Colors.grey[200]),
                                     child: Text(
                                       "Default",
                                       style: TextStyle(
-                                        color: Colors.green,
+                                        color: Colors.red,
                                       ),
                                     ),
                                   )
@@ -90,12 +90,14 @@ class _AddressListState extends State<AddressList> {
                           ),
                           Expanded(
                               child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.edit)),
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.edit)),
                               IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.delete))
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.delete))
                             ],
                           ))
                         ],

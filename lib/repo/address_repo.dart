@@ -12,7 +12,7 @@ class AddressRepository {
     final response = await http.get(uri, headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2b3RpZW4xMjM0NUBnbWFpbC5jb20iLCJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUm9sZV9DdXN0b21lciJ9XSwiaWF0IjoxNjkyNTM4NzE5LCJleHAiOjE2OTI1NTY3MTl9.tI3V97SuRBVar6cjpeJH2qYGIWbcmtdyYM4GNjySPSM"
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2b3RpZW4xMjM0NUBnbWFpbC5jb20iLCJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUm9sZV9DdXN0b21lciJ9XSwiaWF0IjoxNjkyNjA4MjQ2LCJleHAiOjE2OTI2MjYyNDZ9.JOwBSrz6CFTqGMlRi2VFdTNxNxuqwZ69Jdb-6dkBcQE.iN2Wtbe2MXX60PDxs40Cd1ywF8HveGI4B6BHLDovU7U"
     });
     if (response.statusCode == 200) {
       return _parseJsonList(response.body);
