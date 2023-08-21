@@ -3,19 +3,6 @@ import 'package:mobile_store_app/screens/cart_screen.dart';
 import 'package:mobile_store_app/screens/detail_screen.dart';
 import 'package:mobile_store_app/screens/home_screen.dart';
 
-void main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(body: BottomNavigation()),
-    );
-  }
-}
-
 class BottomNavigation extends StatefulWidget {
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
