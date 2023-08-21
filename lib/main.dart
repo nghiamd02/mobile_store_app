@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_store_app/screens/screen_login.dart';
 
 void main() => runApp(const MyApp());
 
@@ -16,9 +17,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Center(
-          child: Text('Hello Mobile Store App'),
-        ),
+        body: ScreenLogin(),
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
