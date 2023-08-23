@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_store_app/screens/promotion_screen.dart';
 import 'package:mobile_store_app/screens/search/search_bar.dart';
-import 'package:mobile_store_app/screens/your_information/address_list.dart';
-import 'package:mobile_store_app/screens/your_information/nav_bar_user_infor.dart';
-import 'package:mobile_store_app/screens/your_information/user_information.dart';
 import 'package:mobile_store_app/widget/bottom_navigation.dart';
+import 'package:mobile_store_app/widget/your_information/address_list.dart';
+import 'package:mobile_store_app/widget/your_information/nav_bar_user_infor.dart';
+import 'package:mobile_store_app/widget/your_information/user_information.dart';
 
 class YourInformationScreen extends StatefulWidget {
   const YourInformationScreen({super.key});
