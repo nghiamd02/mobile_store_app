@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile_store_app/screens/screen_login.dart';
+import '../repo/user_repo.dart';
+import '../widget/bottom_navigation.dart';
 
 class ScreenRegister extends StatefulWidget {
   ScreenRegister({Key? key}) : super(key: key);
@@ -12,11 +15,18 @@ class ScreenRegister extends StatefulWidget {
 }
 
 class _ScreenRegisterState extends State<ScreenRegister> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _fullnameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _repeatpasswordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController fullnameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController repeatpasswordController = TextEditingController();
+  bool passwordsMatch = true;
+  bool _isEmailValid = true;
+
+  bool isEmailValid(String email) {
+    final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+    return emailRegExp.hasMatch(email);
+  }
 
   @override
   void initState() {
@@ -26,6 +36,15 @@ class _ScreenRegisterState extends State<ScreenRegister> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void checkPasswords() {
+    String password1 = passwordController.text;
+    String password2 = repeatpasswordController.text;
+
+    setState(() {
+      passwordsMatch = (password1 == password2);
+    });
   }
 
   @override
@@ -70,7 +89,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
                 Container(
                     width: 300,
-                    height: 480,
+                    height: 493,
                     child: Column(children: [
                       Container(
                         padding: const
@@ -86,7 +105,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                       ),
 
                       TextFormField(
-                        controller: _nameController,
+                        controller: nameController,
                         decoration:  const InputDecoration(
                           hintText: 'User Name',
                           border: OutlineInputBorder(),
@@ -100,10 +119,10 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                         },
                       ),
 
-                      SizedBox(height: 12),
+                      SizedBox(height: 13),
 
                       TextFormField(
-                        controller: _emailController,
+                        controller: emailController,
                         decoration: const  InputDecoration(
                           hintText: 'Email',
                           border: OutlineInputBorder(),
@@ -116,11 +135,15 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                           print('Giá trị nhập liệu: $value');
                         },
                       ),
+                      SizedBox(height: 4),
 
-                      SizedBox(height: 12),
+                      if( _isEmailValid == false)
+                        Text("Email isn't valid", style: TextStyle(color: Colors.red, fontSize: 10)),
+
+                      SizedBox(height: 7),
 
                       TextFormField(
-                        controller: _fullnameController,
+                        controller: fullnameController,
                         decoration: const  InputDecoration(
                           hintText: 'Full Name',
                           border: OutlineInputBorder(),
@@ -134,10 +157,11 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                         },
                       ),
 
-                      SizedBox(height: 12),
+                      SizedBox(height: 13),
 
                       TextFormField(
-                        controller: _passwordController,
+                        controller: passwordController,
+                        obscureText: true,
                         decoration: const InputDecoration(
                           hintText: 'Password',
                           border: OutlineInputBorder(),
@@ -151,11 +175,11 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                         },
                       ),
 
-                      SizedBox(height: 12),
+                      SizedBox(height: 13),
 
                       TextFormField(
-                        controller: _repeatpasswordController,
-
+                        controller: repeatpasswordController,
+                        obscureText: true,
                         decoration: const InputDecoration(
                           hintText: 'Repeat password',
                           border: OutlineInputBorder(),
@@ -169,15 +193,64 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                         },
                       ),
 
-                      SizedBox(height: 20),
+                      SizedBox(height: 5),
+
+                      if(passwordsMatch == false)
+                        Text("Password doesn't match previous entry", style: TextStyle(color: Colors.red, fontSize: 10)),
+
+                      SizedBox(height: 4),
 
                       ElevatedButton(
-                        onPressed: () {
-                          _register();
+                        onPressed: () async {
+                          var is_error = false;
+
+
+                          if(nameController.text.trim() == "") {
+                            is_error = true;
+                          }
+
+                          if(emailController.text.trim() == "") {
+                            is_error = true;
+                          }
+
+                          if(fullnameController.text.trim() == "") {
+                            is_error = true;
+                          }
+
+                          if(passwordController.text.trim() == "") {
+                            is_error = true;
+                          }
+                          if(repeatpasswordController.text.trim() == "") {
+                            is_error = true;
+                          }
+
+                          if (is_error == true){
+                            showFillInAllDialog();
+                          } else {
+                            checkPasswords();
+                            _isEmailValid = isEmailValid(emailController.text);
+                            if (passwordsMatch == true && _isEmailValid == true)  {
+                              final user_api = new UserApi();
+                              var response = await user_api.register(emailController.text, passwordController.text, fullnameController.text);
+
+                              if (response == 201) {
+                                showRegisterSuccessDialog();
+                                print('Đăng ký thành công!');
+
+                              } else {
+                                if (response == 409) {
+                                  showRegisterDuplicateDialog();
+                                } else {
+                                  showRegisterFailedDialog();
+                                }
+                              };
+                            }
+
+                          }
                           print('Đăng ký thành công!');
                         },
                         style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all(Size(300, 46)),
+                          minimumSize: MaterialStateProperty.all(Size(300, 40)),
                           // Kích thước tối thiểu (rộng x cao)
                           backgroundColor: MaterialStateProperty.resolveWith<
                               Color>(
@@ -196,8 +269,9 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                         ),
                       ),
 
-
                     ])),
+
+
 
                 Container(
                   child: Row(
@@ -207,7 +281,10 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ScreenLogin(),
+                          ));
                         },
                         child: const Text('Login', style: TextStyle(
                             color: Colors.orangeAccent,
@@ -219,25 +296,92 @@ class _ScreenRegisterState extends State<ScreenRegister> {
               ])));
   }
 
-  Future<void> _register() async {
-    //get data from form
-    final username = _nameController.text;
-    final fullname = _fullnameController.text;
-    final email = _emailController.text;
-    final password = _passwordController.text;
-
-    final body = jsonEncode({
-      "email": email,
-      "password": password,
-      "fullName": fullname,
-      "gender": "0",
-      "birthDay": "20-03-2003",
-      "authProvider": "null"
-    });
-
-    const url = "http://45.117.170.206:60/apis/user/";
-    final uri = Uri.parse(url);
-    final response = await http.post(uri, body: body, headers:  {"Content-Type": "application/json"});
-    print(response.body);
+  void showFillInAllDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Please fill in all fields'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ScreenRegister(),
+                ));
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
+
+  void showRegisterSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Register success!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ScreenLogin(),
+                ));
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showRegisterDuplicateDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Email still exist'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ScreenRegister(),
+                ));
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showRegisterFailedDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Internal Server Error'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ScreenRegister(),
+                ));
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
