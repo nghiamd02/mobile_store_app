@@ -3,7 +3,9 @@ import 'package:mobile_store_app/screens/promotion_screen.dart';
 import 'package:mobile_store_app/screens/your_information/your_information_screen.dart';
 
 class NavBarUserInfor extends StatelessWidget {
-  const NavBarUserInfor({super.key});
+  const NavBarUserInfor({super.key, required this.onNavBarClicked});
+
+  final void Function(int index) onNavBarClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +24,7 @@ class NavBarUserInfor extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => YourInformationScreen(),
-              )); // Điều hướng đến route "Your Information"
+              onNavBarClicked(0);
             },
             child: Column(
               children: [
@@ -69,11 +69,7 @@ class NavBarUserInfor extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const PromotionScreen()),
-              );
+              onNavBarClicked(1);
             },
             child: Column(
               children: [

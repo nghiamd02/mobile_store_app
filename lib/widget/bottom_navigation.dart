@@ -5,8 +5,7 @@ import 'package:mobile_store_app/screens/home_screen.dart';
 import 'package:mobile_store_app/screens/your_information/your_information_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
-  BottomNavigation({this.currentIndex});
-  int? currentIndex;
+  BottomNavigation();
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
