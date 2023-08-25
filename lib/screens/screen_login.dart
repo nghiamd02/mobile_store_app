@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile_store_app/screens/home_screen.dart';
 import 'package:mobile_store_app/screens/screen_register.dart';
 import 'package:mobile_store_app/widget/bottom_navigation.dart';
-
-
 import '../common_widget.dart';
 import '../repo/user_repo.dart';
 
