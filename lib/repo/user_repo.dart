@@ -42,11 +42,22 @@ class UserApi {
     final uri = Uri.parse(url);
     final response = await http.post(uri, body: body, headers:  {"Content-Type": "application/json"});
     print(response.body);
+    if (response.statusCode == 201)  {
+      await activeUser(email);
+    }
     return response.statusCode;
   }
 
   Future<int> sendEmail(String? email) async {
     final url  = "$APIURL/mail/forgot-password/$email";
+    final uri = Uri.parse(url);
+    final response = await get(uri, headers:  {"Content-Type": "application/json"});
+    print(response.body);
+    return response.statusCode;
+  }
+
+  Future<int> otpActive(String? otp) async {
+    final url  = "$APIURL/user/active-otp?activeOTP=$otp";
     final uri = Uri.parse(url);
     final response = await get(uri, headers:  {"Content-Type": "application/json"});
     print(response.body);
@@ -62,6 +73,14 @@ class UserApi {
     const url = "$APIURL/user/change-password-by-otp/";
     final uri = Uri.parse(url);
     final response = await http.post(uri, body: body, headers:  {"Content-Type": "application/json"});
+    print(response.body);
+    return response.statusCode;
+  }
+
+  Future<int> activeUser(String? email) async {
+    final url  = "$APIURL/mail/active-user?email=$email";
+    final uri = Uri.parse(url);
+    final response = await get(uri, headers:  {"Content-Type": "application/json"});
     print(response.body);
     return response.statusCode;
   }

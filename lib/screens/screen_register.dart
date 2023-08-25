@@ -22,6 +22,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
   TextEditingController repeatpasswordController = TextEditingController();
   bool passwordsMatch = true;
   bool _isEmailValid = true;
+  bool _isError = false;
 
   bool isEmailValid(String email) {
     final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
@@ -328,9 +329,10 @@ class _ScreenRegisterState extends State<ScreenRegister> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ScreenLogin(),
-                ));
+                showActiveUser(context);
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) => ScreenLogin(),
+                // ));
               },
               child: const Text('Close'),
             ),
@@ -384,4 +386,138 @@ class _ScreenRegisterState extends State<ScreenRegister> {
     );
   }
 
+  void showActiveUser(BuildContext context ) {
+    TextEditingController otpController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0.0),
+            ),
+            child: Container(
+              padding: EdgeInsets.all(0.0),
+              width: 340,
+              height: 230,
+
+              child: Column(
+                children: [
+                  Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey, // Màu của đường viền
+                          width: 1.0,          // Độ dày của đường viền
+                        ),
+                      ),
+                      width: 340,
+                      height: 50,
+                      //color: Color.fromRGBO(190, 190, 190, 0.7),
+                      child: Center(
+                        child: Text(
+                          'VERIFIED EMAIL',
+                          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.green),
+                        ),
+                      )
+                  ),
+
+                  SizedBox(height: 12),
+
+                  Center(
+                    child: Container(
+                      width: 240,
+                      height: 35,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: TextFormField(
+                          controller: otpController,
+                          decoration: InputDecoration(
+                            hintText: '',
+                            hintStyle: TextStyle(fontSize: 12.0, color: Colors.green),
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (value) {
+                            print('Gía trị nhập liệu: $value');
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 2),
+
+                  Center(
+                    child: Container(
+                      width: 240,
+                      height: 25,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text("0/4", style: TextStyle(color: Colors.grey),),
+                      ),
+                    ),
+                  ),
+                    if (_isError == true)
+                      Text( "Active user isn't successful"),
+
+                  Center(
+                    child: Container(
+                      width: 240,
+                      height: 25,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text("Sent OTP via Email: 59s"),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 8),
+
+                  Container(
+                    width: 200,
+                    height: 40,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 150,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.green,
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 0, right: 0, bottom: 0,top: 0),
+                            child: TextButton(
+                              child: Text('Verified Email', style: TextStyle(fontSize:15, color: Colors.white, fontWeight: FontWeight.w400),),
+                              onPressed: () async {
+                                final user_api = new UserApi();
+                                var response = await user_api.otpActive(otpController.text);
+                                if ( response == 200 ){
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ScreenLogin(),
+                                  ));
+                                } else {
+                                  setState(() {
+                                    _isError = true;
+                                  });
+                                  Navigator.of(context).pop();
+                                  showActiveUser(context);
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ],),
+            )
+        );
+      },
+    );
+  }
 }
