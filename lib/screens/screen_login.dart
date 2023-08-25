@@ -116,7 +116,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                 SizedBox(height: 15),
                 ElevatedButton(
                   onPressed: () async {
-                    final user_api = new UserApi();
+                    final user_api = new UserRepository();
                     var response = await user_api.login(
                         _usernameController.text, _passwordController.text);
                     if (response == 201) {

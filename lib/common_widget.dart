@@ -101,7 +101,7 @@ void showForgotPasswordEmail(BuildContext context) {
                           child: TextButton(
                             child: Text('Confirm', style: TextStyle(fontSize:12, color: Colors.white, fontWeight: FontWeight.w300),),
                             onPressed: () async {
-                              final user_api = new UserApi();
+                              final user_api = new UserRepository();
                               var response = await user_api.sendEmail(
                                  emailController.text);
 
@@ -296,7 +296,7 @@ void showForgotPasswordOtp(BuildContext context) {
                           child: TextButton(
                             child: Text('Confirm', style: TextStyle(fontSize:12, color: Colors.white, fontWeight: FontWeight.w300),),
                             onPressed: () async {
-                              final user_api = new UserApi();
+                              final user_api = new UserRepository();
                               var response = await user_api.resetPassword(
                               otpController.text, passwordController.text,);
                               print(response);

@@ -231,7 +231,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                             checkPasswords();
                             _isEmailValid = isEmailValid(emailController.text);
                             if (passwordsMatch == true && _isEmailValid == true)  {
-                              final user_api = new UserApi();
+                              final user_api = new UserRepository();
                               var response = await user_api.register(emailController.text, passwordController.text, fullnameController.text);
 
                               if (response == 201) {
@@ -492,7 +492,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                             child: TextButton(
                               child: Text('Verified Email', style: TextStyle(fontSize:15, color: Colors.white, fontWeight: FontWeight.w400),),
                               onPressed: () async {
-                                final user_api = new UserApi();
+                                final user_api = new UserRepository();
                                 var response = await user_api.otpActive(otpController.text);
                                 if ( response == 200 ){
                                   Navigator.of(context).pop();

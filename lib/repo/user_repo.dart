@@ -6,21 +6,20 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
 
-class UserApi {
+class UserRepository {
   final _storage = const FlutterSecureStorage();
   Future<int> login(String username, String password) async {
     final body = jsonEncode({
       "email": username,
       "password": password,
     });
-
     const url = "$APIURL/login/";
     final uri = Uri.parse(url);
     final response = await http.post(uri, body: body, headers:  {"Content-Type": "application/json"});
     if(response.statusCode == 201) {
       var data = jsonDecode(response.body);
       print(data);
-      await saveUserInfo(data['token'], username);
+      await saveUserInfo(data['token'], username, data['idUser']);
     }
 
     return response.statusCode;
@@ -85,14 +84,16 @@ class UserApi {
     return response.statusCode;
   }
 
-  saveUserInfo(token, username) async {
+  saveUserInfo(token, username, idUser) async {
     await _storage.write(key: "token", value: token,);
     await _storage.write(key: "username", value: username,);
+    await _storage.write(key: "idUser", value: idUser,);
   }
 
   void logout() async {
     await _storage.delete(key: "username",);
     await _storage.delete(key: "token");
+    await _storage.delete(key: "idUser");
   }
 
   getToken() async {
@@ -100,9 +101,14 @@ class UserApi {
     return val.toString();
   }
 
-
   getUsername() async {
     String? val = await _storage.read(key: "username");
     return val.toString();
   }
+
+  getIdUser() async {
+    String? val = await _storage.read(key: "idUser");
+    return val.toString();
+  }
 }
+
