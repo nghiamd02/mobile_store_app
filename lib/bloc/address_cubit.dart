@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_store_app/bloc/state/address_state.dart';
+import 'package:mobile_store_app/models/address.dart';
 import 'package:mobile_store_app/repo/address_repo.dart';
 
 class AddressCubit extends Cubit<AddressState> {
@@ -12,6 +13,16 @@ class AddressCubit extends Cubit<AddressState> {
     try {
       var result = await _addressRepository.getAllAddresses();
       emit(SuccessLoadingAddress(result));
+    } catch (e) {
+      emit(FailureAddressState(e.toString()));
+    }
+  }
+
+  Future<void> createAddress(Address address) async {
+    emit(LoadingAddressState());
+    try {
+      var result = await _addressRepository.getAllAddresses();
+      emit(SuccessAddAddress(address));
     } catch (e) {
       emit(FailureAddressState(e.toString()));
     }
