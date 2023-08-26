@@ -18,6 +18,7 @@ class _AddressListState extends State<AddressList> {
   final addressCubit = AddressCubit(AddressRepository());
   AddressDataRepository addressDataRepository = AddressDataRepository();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late Address _newAddress;
 
   @override
   void initState() {
@@ -26,9 +27,8 @@ class _AddressListState extends State<AddressList> {
     addressDataRepository.setData();
   }
 
-  void _onSubmitForm() {
+  void _onSubmitForm(Address address) {
     if (_formKey.currentState!.validate()) {
-      print("Done Form");
     } else {
       print("Not Done Form Yet");
     }
@@ -39,6 +39,7 @@ class _AddressListState extends State<AddressList> {
     String? districtSelected =
         addressDataRepository.districts[provinceSelected]![0];
     String? wardSelected = addressDataRepository.wards[districtSelected]![0];
+
     bool isChecked = false;
     showDialog(
         context: context,
@@ -254,7 +255,10 @@ class _AddressListState extends State<AddressList> {
                                     alignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       ElevatedButton(
-                                          onPressed: _onSubmitForm,
+                                          onPressed: () {
+                                            String location =
+                                                "${provinceSelected!}, ${districtSelected!}, ${wardSelected!}";
+                                          },
                                           child: Text("Save")),
                                       ElevatedButton(
                                           onPressed: () {},

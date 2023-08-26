@@ -12,7 +12,7 @@ class AddressRepository {
     final response = await http.get(uri, headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2b3RpZW4xMjM0NUBnbWFpbC5jb20iLCJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUm9sZV9DdXN0b21lciJ9XSwiaWF0IjoxNjkyOTQzMTIwLCJleHAiOjE2OTI5NjExMjB9.dw8iYt6fhK4LGMyk-Nm1QS8fUdwymE8lZ5cb0kBBa54"
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2b3RpZW4xMjM0NUBnbWFpbC5jb20iLCJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUm9sZV9DdXN0b21lciJ9XSwiaWF0IjoxNjkzMDU0NjI1LCJleHAiOjE2OTMwNzI2MjV9.kCFU2sNMYI_NgMjAKLtL1Qc1VO6u_YT3N2n4vQdD6Mo"
     });
     if (response.statusCode == 200) {
       return _parseJsonList(response.body);
@@ -26,7 +26,7 @@ class AddressRepository {
     return parsedList.map<Address>((json) => Address.fromJson(json)).toList();
   }
 
-  void createAddress(Address address) async {
+  Future<Address> createAddress(Address address) async {
     final uri = Uri.parse(addressUrl);
     final body = {
       "location": address.location,
@@ -35,6 +35,15 @@ class AddressRepository {
       "defaults": address.defaults
     };
 
-    final response = await http.post(uri, body: body);
+    final response = await http.post(uri, body: body, headers: {
+      HttpHeaders.authorizationHeader:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ2b3RpZW4xMjM0NUBnbWFpbC5jb20iLCJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUm9sZV9DdXN0b21lciJ9XSwiaWF0IjoxNjkzMDU0NjI1LCJleHAiOjE2OTMwNzI2MjV9.kCFU2sNMYI_NgMjAKLtL1Qc1VO6u_YT3N2n4vQdD6Mo"
+    });
+
+    if (response.statusCode == 201) {
+      return Address.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Failed to add a new address");
+    }
   }
 }
