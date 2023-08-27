@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_store_app/screens/cart_screen.dart';
+import 'package:mobile_store_app/screens/detail_screen.dart';
+import 'package:mobile_store_app/screens/home_screen.dart';
 import 'package:mobile_store_app/screens/screen_login.dart';
+import 'package:mobile_store_app/widget/text_format/detail_text.dart';
 
 void main() => runApp(const MyApp());
 
@@ -17,7 +21,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: ScreenLogin(),
+        body: HomeScreen(),
       ),
     );
   }

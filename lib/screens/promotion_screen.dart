@@ -60,99 +60,6 @@ class __PromotionPageState extends State<_PromotionPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CustomSearchBar(),
-              const SizedBox(
-                height: 8,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.95,
-                height: 90,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    topRight: Radius.circular(8),
-                  ),
-                  color: Colors.white,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => YourInformationScreen(),
-                        )); // Điều hướng đến route "Your Information"
-                      },
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: 40, // Đặt kích thước cố định cho hình ảnh
-                            height: 40, // Đặt kích thước cố định cho hình ảnh
-                            child: Image.asset('assets/img/image 29.png'),
-                          ),
-                          const Text("Your infomation",
-                              style: TextStyle(
-                                fontFamily: "Inter",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff000000),
-                                height: 31 / 14,
-                              ))
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, '/order'); // Điều hướng đến route "Order"
-                      },
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: 40, // Đặt kích thước cố định cho hình ảnh
-                            height: 40, // Đặt kích thước cố định cho hình ảnh
-                            child: Image.asset('assets/img/shopping-bag 1.png'),
-                          ),
-                          const Text("Order",
-                              style: TextStyle(
-                                fontFamily: "Inter",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff000000),
-                                height: 31 / 14,
-                              ))
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PromotionScreen()),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: 40, // Đặt kích thước cố định cho hình ảnh
-                            height: 40, // Đặt kích thước cố định cho hình ảnh
-                            child: Image.asset('assets/img/promotion 1.png'),
-                          ),
-                          const Text("Promotion",
-                              style: TextStyle(
-                                fontFamily: "Inter",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff000000),
-                                height: 31 / 14,
-                              ))
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               const SizedBox(
                 height: 10,
               ),
@@ -191,17 +98,17 @@ class __PromotionPageState extends State<_PromotionPage> {
                                     padding: const EdgeInsets.all(10.0),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           children: [
                                             SizedBox(
                                               width:
-                                                  50, // Đặt kích thước cố định cho hình lục giác
+                                              50, // Đặt kích thước cố định cho hình lục giác
                                               height:
-                                                  50, // Đặt kích thước cố định cho hình lục giác
+                                              50, // Đặt kích thước cố định cho hình lục giác
                                               child: CustomPaint(
                                                 painter: _HexagonPainter(),
                                                 child: Center(
@@ -210,7 +117,7 @@ class __PromotionPageState extends State<_PromotionPage> {
                                                     style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                     ),
                                                   ),
                                                 ),
@@ -220,7 +127,7 @@ class __PromotionPageState extends State<_PromotionPage> {
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     '${promotion.discount}% discount for orders under \$${promotion.maxGet.toStringAsFixed(0)}, for customers who bought \$${promotion.totalPurchase.toStringAsFixed(0)}',
@@ -229,7 +136,7 @@ class __PromotionPageState extends State<_PromotionPage> {
                                                       fontFamily: "Inter",
                                                       fontSize: 12,
                                                       fontWeight:
-                                                          FontWeight.w300,
+                                                      FontWeight.w300,
                                                       color: Color(0xff979595),
                                                     ),
                                                   ),
@@ -240,7 +147,7 @@ class __PromotionPageState extends State<_PromotionPage> {
                                                       fontFamily: "Inter",
                                                       fontSize: 12,
                                                       fontWeight:
-                                                          FontWeight.w300,
+                                                      FontWeight.w300,
                                                       color: Color(0xff979595),
                                                     ),
                                                   ),
@@ -278,7 +185,7 @@ class __PromotionPageState extends State<_PromotionPage> {
                                   return Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children:
-                                        List.generate(totalPages, (index) {
+                                    List.generate(totalPages, (index) {
                                       return ElevatedButton(
                                         onPressed: () {
                                           _changePage(index);
