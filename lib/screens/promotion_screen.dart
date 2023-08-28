@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_store_app/bloc/promotion_cubit.dart';
 import 'package:mobile_store_app/repo/promotion_repo.dart';
-import 'package:mobile_store_app/screens/search/search_bar.dart';
-import 'package:mobile_store_app/screens/your_information/your_information_screen.dart';
+import 'package:mobile_store_app/screens/search_bar.dart';
+import 'package:mobile_store_app/screens/your_information_screen.dart';
 
 import '../bloc/promotion_state.dart';
 import '../models/promotion.dart';

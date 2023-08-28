@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_store_app/screens/promotion_screen.dart';
-import 'package:mobile_store_app/screens/your_information/your_information_screen.dart';
+import 'package:mobile_store_app/screens/your_information_screen.dart';
 
 class NavBarUserInfor extends StatelessWidget {
   const NavBarUserInfor({super.key, required this.onNavBarClicked});
@@ -46,8 +46,7 @@ class NavBarUserInfor extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(
-                  context, '/order'); // Điều hướng đến route "Order"
+              onNavBarClicked(1);
             },
             child: Column(
               children: [
@@ -69,7 +68,7 @@ class NavBarUserInfor extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              onNavBarClicked(1);
+              onNavBarClicked(2);
             },
             child: Column(
               children: [

@@ -2,7 +2,7 @@ import 'dart:ffi';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_store_app/screens/search/search_bar.dart';
+import 'package:mobile_store_app/screens/search_bar.dart';
 import 'package:mobile_store_app/widget/bottom_navigation.dart';
 import 'package:mobile_store_app/widget/text_format/subtitle_text.dart';
 import 'package:mobile_store_app/widget/text_format/title_text.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_store_app/screens/order_screen.dart';
 import 'package:mobile_store_app/screens/promotion_screen.dart';
-import 'package:mobile_store_app/screens/search/search_bar.dart';
+import 'package:mobile_store_app/screens/search_bar.dart';
 import 'package:mobile_store_app/widget/bottom_navigation.dart';
 import 'package:mobile_store_app/widget/your_information/address_list.dart';
 import 'package:mobile_store_app/widget/your_information/nav_bar_user_infor.dart';
@@ -21,6 +22,7 @@ class _YourInformationScreenState extends State<YourInformationScreen> {
         child: Column(
       children: [UserInformation(), Expanded(child: AddressList())],
     )),
+    Expanded(child: OrderScreen()),
     Expanded(child: PromotionScreen())
   ];
 
