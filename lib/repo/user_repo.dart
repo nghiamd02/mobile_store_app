@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import '../repo/constant_repo.dart';
@@ -100,6 +101,16 @@ class UserRepository {
     );
   }
 
+  //added by Nghia
+  saveUserPhoneNumber(String number) async {
+    await _storage.write(key: "phoneNumber", value: number);
+  }
+
+  Future<String?> getUserPhoneNumber() async {
+    String? result = await _storage.read(key: "phoneNumber");
+    return result;
+  }
+
   void logout() async {
     await _storage.delete(
       key: "username",
@@ -113,7 +124,7 @@ class UserRepository {
     return val.toString();
   }
 
-  getUsername() async {
+  Future<String> getUsername() async {
     String? val = await _storage.read(key: "username");
     return val.toString();
   }
@@ -121,5 +132,20 @@ class UserRepository {
   getIdUser() async {
     String? val = await _storage.read(key: "idUser");
     return val.toString();
+  }
+
+  //added by Nghia
+  Future<Map<String, dynamic>> getUserById(String id) async {
+    final url = "$APIURL/user/$id";
+    final uri = Uri.parse(url);
+    final userToken = await getToken();
+    final response = await http.get(uri, headers: {
+      HttpHeaders.authorizationHeader: "Bearer $userToken",
+    });
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception("Failed to find user");
+    }
   }
 }
