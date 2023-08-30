@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import '../repo/constant_repo.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserRepository {
   final _storage = const FlutterSecureStorage();
+  Map<String, dynamic>? currentUser;
   Future<int> login(String username, String password) async {
     final body = jsonEncode({
       "email": username,
@@ -18,7 +20,6 @@ class UserRepository {
         .post(uri, body: body, headers: {"Content-Type": "application/json"});
     if (response.statusCode == 201) {
       var data = jsonDecode(response.body);
-      print(data);
       await saveUserInfo(data['token'], username, data['idUser']);
     }
 
@@ -39,7 +40,7 @@ class UserRepository {
     final uri = Uri.parse(url);
     final response = await http
         .post(uri, body: body, headers: {"Content-Type": "application/json"});
-    print(response.body);
+
     if (response.statusCode == 201) {
       await activeUser(email);
     }
@@ -51,7 +52,7 @@ class UserRepository {
     final uri = Uri.parse(url);
     final response =
         await get(uri, headers: {"Content-Type": "application/json"});
-    print(response.body);
+
     return response.statusCode;
   }
 
@@ -60,7 +61,7 @@ class UserRepository {
     final uri = Uri.parse(url);
     final response =
         await get(uri, headers: {"Content-Type": "application/json"});
-    print(response.body);
+
     return response.statusCode;
   }
 
@@ -73,7 +74,7 @@ class UserRepository {
     final uri = Uri.parse(url);
     final response = await http
         .post(uri, body: body, headers: {"Content-Type": "application/json"});
-    print(response.body);
+
     return response.statusCode;
   }
 
@@ -82,7 +83,7 @@ class UserRepository {
     final uri = Uri.parse(url);
     final response =
         await get(uri, headers: {"Content-Type": "application/json"});
-    print(response.body);
+
     return response.statusCode;
   }
 
@@ -147,5 +148,38 @@ class UserRepository {
     } else {
       throw Exception("Failed to find user");
     }
+  }
+
+  //add by Nghia
+  Future<bool> updateUser(
+      {int? id,
+      String? email,
+      String? name,
+      String? birthDay,
+      int? gender}) async {
+    final url = "$APIURL/user/$id";
+    final uri = Uri.parse(url);
+    final userToken = await getToken();
+    final body = jsonEncode({
+      "email": email,
+      "fullName": name,
+      "gender": gender,
+      "birthDat": birthDay,
+    });
+    final response = await http.put(uri, body: body, headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $userToken"
+    });
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception("Failed to update user information");
+    }
+  }
+
+  Future<void> setCurrentUser() async {
+    String userId = await getIdUser();
+    currentUser = await getUserById(userId);
   }
 }

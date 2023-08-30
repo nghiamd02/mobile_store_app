@@ -16,9 +16,7 @@ class AddressRepository {
       HttpHeaders.authorizationHeader: "Bearer $userToken"
     });
     if (response.statusCode == 200) {
-      List json = jsonDecode(response.body);
-      final result = json.map((e) => Address.fromJson(e)).toList();
-      return result;
+      return _parseJsonList(response.body);
     } else {
       throw Exception('Failed to load data');
     }
@@ -68,7 +66,7 @@ class AddressRepository {
     }
   }
 
-  Future<void> updateAddress(Address updatedAddress) async {
+  Future<Address> updateAddress(Address updatedAddress) async {
     final url = "$addressUrl/update-address/${updatedAddress.id}";
 
     final userToken = await _userRepository.getToken();
@@ -87,11 +85,11 @@ class AddressRepository {
     });
 
     print(response.statusCode);
-    // if (response.statusCode == 200) {
-    //   return Address.fromJson(jsonDecode(response.body));
-    // } else {
-    //   throw Exception("Failed to update address");
-    // }
+    if (response.statusCode == 200) {
+      return Address.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Failed to update address");
+    }
   }
 
   Future<Address> getAddressById(Address address) async {

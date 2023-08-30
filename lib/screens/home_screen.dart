@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
+            const CustomSearchBar(),
             Container(
               margin: const EdgeInsets.only(top: 20, left: 48, right: 48),
               child: CarouselSlider.builder(
