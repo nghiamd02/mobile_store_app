@@ -16,6 +16,7 @@ class _UserInformationState extends State<UserInformation> {
   final UserRepository _userRepository = UserRepository();
   String? phoneNumber;
   final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -54,29 +55,32 @@ class _UserInformationState extends State<UserInformation> {
   }
 
   void showEditUserInforDialog() {
-    TextEditingController dobController = TextEditingController();
-    dobController.text = _currentUser!["birthDay"];
-    DateTime? result;
+    String? dob = _currentUser!["birthDay"];
     showDialog(
       context: context,
       builder: (context) {
-        return Dialog(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-            height: 400,
-            child: Column(
-              children: [
-                const Text(
-                  "Edit Information",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Expanded(child: StatefulBuilder(
-                  builder: (context, setState) {
-                    print("Rebuild form");
-                    return Form(
+        dob = _currentUser!["birthDay"];
+        return StatefulBuilder(
+          builder: (context, setState) {
+            print("Rebuild Dialog");
+            print(dob);
+            return Dialog(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                height: 400,
+                child: Column(
+                  children: [
+                    const Text(
+                      "Edit Information",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                        child: Form(
                       key: _formKey,
                       child: SingleChildScrollView(
                         child: Column(
@@ -101,25 +105,29 @@ class _UserInformationState extends State<UserInformation> {
                               height: 10,
                             ),
                             TextFormField(
-                              initialValue: dobController.text,
+                              key: Key(dob!),
+                              // enabled: false,
+                              keyboardType: TextInputType.none,
+                              initialValue: dob,
                               decoration: InputDecoration(
-                                  label: const Text("Date Of Birth"),
+                                  label: Text(dob!),
                                   border: const OutlineInputBorder(),
                                   suffixIcon: IconButton(
                                     icon: const Icon(
                                         Icons.calendar_month_outlined),
                                     onPressed: () async {
-                                      result = await showDatePicker(
+                                      DateTime? result = await showDatePicker(
                                           context: context,
                                           initialDate: DateTime.now(),
                                           firstDate: DateTime(1900),
                                           lastDate: DateTime.now());
-                                      if (result != null) {
-                                        setState(() {
-                                          dobController.text =
-                                              DateFormat.yMd().format(result!);
-                                        });
-                                      }
+                                      String selectedDate =
+                                          DateFormat.yMd().format(result!);
+                                      setState(
+                                        () {
+                                          dob = selectedDate;
+                                        },
+                                      );
                                     },
                                   )),
                               validator: (value) {
@@ -183,27 +191,29 @@ class _UserInformationState extends State<UserInformation> {
                               children: [
                                 ElevatedButton(
                                   onPressed: _onSubmitEditForm,
-                                  child: Text("Save"),
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.green),
+                                  child: const Text("Save"),
                                 ),
                                 ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text("Cancel"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.red),
+                                  child: const Text("Cancel"),
                                 )
                               ],
                             ),
                           ],
                         ),
                       ),
-                    );
-                  },
-                )),
-              ],
-            ),
-          ),
+                    )),
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );
@@ -235,7 +245,7 @@ class _UserInformationState extends State<UserInformation> {
                       height: 30,
                       child: IconButton(
                         icon: const Icon(Icons.edit),
-                        onPressed: _onSubmitEditForm,
+                        onPressed: showEditUserInforDialog,
                         color: Colors.blue,
                       ),
                     )
