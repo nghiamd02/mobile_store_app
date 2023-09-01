@@ -19,6 +19,9 @@ class SuccessLoadingReviewState extends ReviewState{
   SuccessLoadingReviewState(this.reviewResponse);
 }
 
+class NoDataReviewState extends ReviewState{
+}
+
 class SuccessSubmitReviewState extends ReviewState{
   final String successMessage;
 

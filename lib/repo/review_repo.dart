@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:mobile_store_app/models/review.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:mobile_store_app/repo/user_repo.dart';
 
 class ReviewRepository {
   static const String url = "http://45.117.170.206:60/apis/review";
@@ -11,14 +12,14 @@ class ReviewRepository {
 
   static const int statusCode200 = 200;
 
-  static const String bearerToken =
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdW5yaXNlMjQxMTk2QGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJSb2xlX0N1c3RvbWVyIn1dLCJpYXQiOjE2OTMzODUzMTQsImV4cCI6MTY5MzQwMzMxNH0.wxOsN0GoVZH7LRNyF1onXK7mjDf2RBunlWTpbnoz7-4";
+  final UserRepository _userRepository = UserRepository();
 
   //create review
   Future<String> createReview(Content content) async {
+  final userToken = await _userRepository.getToken();
   final uri = Uri.parse(url);
   final headers = {
-    'Authorization': 'Bearer $bearerToken',
+    'Authorization': 'Bearer $userToken',
     'Content-Type': 'application/json', 
   };
   

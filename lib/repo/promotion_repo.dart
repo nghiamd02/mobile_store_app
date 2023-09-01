@@ -4,18 +4,22 @@ import 'dart:convert';
 
 import '../models/promotion.dart';
 
+import 'package:mobile_store_app/repo/user_repo.dart';
+
 class PromotionRepository {
   static const String urlRead = "http://45.117.170.206:60/apis/promotion";
 
   static const int statusCode200 = 200;
 
-  static const String bearerToken =
-      "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlcyI6W3siYXV0aG9yaXR5IjoiUm9sZV9BZG1pbiJ9XSwiaWF0IjoxNjkyNjEwNzc1LCJleHAiOjE2OTI2Mjg3NzV9.SAxJ76Mq0BeHZvU1ZmFWoP0qTCbXcyYsyWYSwxp_mFM";
+  final UserRepository _userRepository = UserRepository();
+
+      
 
   //get all promotion
   Future<ApiResponse> getAllPromotions(int no, int limit) async {
+    final userToken = await _userRepository.getToken();
     final uri = Uri.parse("$urlRead?no=$no&limit=$limit");
-    final headers = {'Authorization': 'Bearer $bearerToken'};
+    final headers = {'Authorization': 'Bearer $userToken'};
     final response = await http.get(uri, headers: headers);
 
     if (response.statusCode == statusCode200) {

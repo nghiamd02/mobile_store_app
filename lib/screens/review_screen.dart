@@ -179,6 +179,10 @@ class __ReviewScreenState extends State<_ReviewScreen> {
                           return Center(
                             child: Text(state.errorMessage),
                           );
+                        } else if( state is NoDataReviewState){
+                          return const Center(
+                            child: Text("No reviews in this product"),
+                          );
                         }
                         return Container();
                       },

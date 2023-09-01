@@ -23,6 +23,9 @@ class ReviewCubit extends Cubit<ReviewState>{
     emit(LoadingReviewState());
     try{
       var result = await _repository.getAllPromotionsById(no, limit, id);
+      if(result.contents.isEmpty){
+        emit(NoDataReviewState());
+      }
       emit(SuccessLoadingReviewState(result));
     }catch(e){
       emit(FailureReviewState(e.toString()));
