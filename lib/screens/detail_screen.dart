@@ -31,6 +31,7 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   final reviewCubit = ReviewCubit(ReviewRepository());
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   int totalPages = 0;
   int currentPage = 0;
   final int limit = 10;
@@ -66,7 +67,7 @@ class _DetailScreenState extends State<DetailScreen> {
       setState(() {
         currentPage = page;
       });
-      _loadDataReview(widget.id); 
+      _loadDataReview(widget.id);
     }
   }
 
@@ -81,7 +82,7 @@ class _DetailScreenState extends State<DetailScreen> {
       status: true,
     );
     await reviewCubit.createReview(content);
-    _loadDataReview(widget.id); 
+    _loadDataReview(widget.id);
   }
 
   void onBack(int index) {
@@ -156,10 +157,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                             MainAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                            width:
-                                                150,
-                                            height:
-                                                30, 
+                                            width: 150,
+                                            height: 30,
                                             child: Text(
                                               content.userName!,
                                               style: const TextStyle(
@@ -317,181 +316,399 @@ class _DetailScreenState extends State<DetailScreen> {
         });
   }
 
-  void _showReviewDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        double dialogWidth = MediaQuery.of(context).size.width * 0.8;
-        return BlocProvider.value(
-          value: reviewCubit,
-          child: BlocConsumer<ReviewCubit, ReviewState>(
-            listener: (context, state) {
-              if (state is FailureReviewState) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.errorMessage),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              } else if (state is SuccessSubmitReviewState) {
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(
-                //     content: Text(state.successMessage),
-                //     duration: const Duration(seconds: 2),
-                //   ),
-                // );
-                _showNotySuccess();
-              }
-            },
-            builder: (context, state) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+  // void _showReviewDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       double dialogWidth = MediaQuery.of(context).size.width * 0.8;
+  //       return BlocProvider.value(
+  //         value: reviewCubit,
+  //         child: BlocConsumer<ReviewCubit, ReviewState>(
+  //           listener: (context, state) {
+  //             if (state is FailureReviewState) {
+  //               ScaffoldMessenger.of(context).showSnackBar(
+  //                 SnackBar(
+  //                   content: Text(state.errorMessage),
+  //                   duration: const Duration(seconds: 2),
+  //                 ),
+  //               );
+  //             } else if (state is SuccessSubmitReviewState) {
+  //               // ScaffoldMessenger.of(context).showSnackBar(
+  //               //   SnackBar(
+  //               //     content: Text(state.successMessage),
+  //               //     duration: const Duration(seconds: 2),
+  //               //   ),
+  //               // );
+  //               _showNotySuccess();
+  //             }
+  //           },
+  //           builder: (context, state) {
+  //             return AlertDialog(
+  //               shape: RoundedRectangleBorder(
+  //                 borderRadius: BorderRadius.circular(10.0),
+  //               ),
+  //               titlePadding: EdgeInsets.zero,
+  //               title: Padding(
+  //                 padding: const EdgeInsets.only(bottom: 4.0),
+  //                 child: Container(
+  //                   width: dialogWidth,
+  //                   height: 60,
+  //                   decoration: const BoxDecoration(
+  //                     color: Color(0xFFD6D6D6),
+  //                     borderRadius: BorderRadius.only(
+  //                       topLeft: Radius.circular(10.0),
+  //                       topRight: Radius.circular(10.0),
+  //                     ),
+  //                   ),
+  //                   child: const Center(
+  //                     child: Text(
+  //                       'PRODUCT REVIEW',
+  //                       style: TextStyle(
+  //                         fontFamily: "Roboto",
+  //                         fontSize: 16,
+  //                         fontWeight: FontWeight.w800,
+  //                         color: Color(0xff000000),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //               content: Container(
+  //                 width: dialogWidth,
+  //                 decoration: const BoxDecoration(
+  //                   color: Colors.white,
+  //                   borderRadius: BorderRadius.only(
+  //                     topLeft: Radius.circular(10.0),
+  //                     topRight: Radius.circular(10.0),
+  //                   ),
+  //                 ),
+  //                 child: Column(
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   children: <Widget>[
+  //                     StatefulBuilder(
+  //                       builder: (BuildContext context, StateSetter setState) {
+  //                         return Padding(
+  //                           padding: const EdgeInsets.only(
+  //                             bottom: 16.0,
+  //                           ),
+  //                           child: Container(
+  //                             color: Colors.white,
+  //                             child: Row(
+  //                               mainAxisAlignment: MainAxisAlignment.center,
+  //                               children: <Widget>[
+  //                                 for (int i = 1; i <= 5; i++)
+  //                                   GestureDetector(
+  //                                     onTap: () {
+  //                                       setState(() {
+  //                                         selectedRating = i;
+  //                                       });
+  //                                     },
+  //                                     child: Icon(
+  //                                       Icons.star,
+  //                                       color: i <= selectedRating
+  //                                           ? Colors.amber
+  //                                           : Colors.grey,
+  //                                     ),
+  //                                   ),
+  //                               ],
+  //                             ),
+  //                           ),
+  //                         );
+  //                       },
+  //                     ),
+  //                     Container(
+  //                       height: 118,
+  //                       width: 500,
+  //                       decoration: BoxDecoration(
+  //                         color: Colors.white,
+  //                         border: Border.all(color: const Color(0xFFD6D6D6)),
+  //                       ),
+  //                       child: Padding(
+  //                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
+  //                         child: Column(
+  //                           children: [
+  //                             TextFormField(
+  //                               controller: commentsController,
+  //                               maxLines: 3,
+  //                               textInputAction: TextInputAction.newline,
+  //                               decoration: const InputDecoration(
+  //                                 hintText: 'Comments:',
+  //                                 hintStyle: TextStyle(color: Colors.green),
+  //                                 border: InputBorder.none,
+  //                               ),
+  //                               validator: (value) {
+  //                                 if (value!.isEmpty) {
+  //                                   return 'Please enter comments';
+  //                                 }
+  //                                 return null;
+  //                               },
+  //                             ),
+  //                             // Hiển thị thông báo lỗi
+  //                             if (_formKey.currentState?.validate() == false)
+  //                               const Text(
+  //                                 'Please enter comments',
+  //                                 style: TextStyle(
+  //                                   color: Colors.red,
+  //                                 ),
+  //                               ),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //               actions: <Widget>[
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     Container(
+  //                       width: 117,
+  //                       height: 39,
+  //                       decoration: BoxDecoration(
+  //                         borderRadius: BorderRadius.circular(5),
+  //                         color: Color(0xff5bb85d),
+  //                       ),
+  //                       child: TextButton(
+  //                         onPressed: () async {
+  //                           if (_formKey.currentState?.validate() == true) {
+  //                           await _sendBtn(widget.id);
+  //                           // ignore: use_build_context_synchronously
+  //                           Navigator.pop(context);
+  //                         }
+  //                         },
+  //                         child: const Text(
+  //                           'Send',
+  //                           style: TextStyle(color: Colors.white),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     Container(
+  //                       width: 117,
+  //                       height: 39,
+  //                       decoration: BoxDecoration(
+  //                         borderRadius: BorderRadius.circular(5),
+  //                         color: Colors.red,
+  //                       ),
+  //                       child: TextButton(
+  //                         onPressed: () {
+  //                           Navigator.pop(context);
+  //                         },
+  //                         child: const Text(
+  //                           'Cancel',
+  //                           style: TextStyle(color: Colors.white),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ],
+  //             );
+  //           },
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+void _showReviewDialog() {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      double dialogWidth = MediaQuery.of(context).size.width * 0.8;
+      return BlocProvider.value(
+        value: reviewCubit,
+        child: BlocConsumer<ReviewCubit, ReviewState>(
+          listener: (context, state) {
+            if (state is FailureReviewState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errorMessage),
+                  duration: const Duration(seconds: 2),
                 ),
-                titlePadding: EdgeInsets.zero,
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 4.0),
-                  child: Container(
-                    width: dialogWidth,
-                    height: 60,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFD6D6D6),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'PRODUCT REVIEW',
-                        style: TextStyle(
-                          fontFamily: "Roboto",
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xff000000),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                content: Container(
+              );
+            } else if (state is SuccessSubmitReviewState) {
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content: Text(state.successMessage),
+              //     duration: const Duration(seconds: 2),
+              //   ),
+              // );
+              _showNotySuccess();
+            }
+          },
+          builder: (context, state) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              titlePadding: EdgeInsets.zero,
+              title: Padding(
+                padding: const EdgeInsets.only(bottom: 4.0),
+                child: Container(
                   width: dialogWidth,
+                  height: 60,
                   decoration: const BoxDecoration(
-                    color: Colors.white,
+                    color: Color(0xFFD6D6D6),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10.0),
                       topRight: Radius.circular(10.0),
                     ),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      StatefulBuilder(
-                        builder: (BuildContext context, StateSetter setState) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 16.0,
-                            ),
-                            child: Container(
-                              color: Colors.white,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  for (int i = 1; i <= 5; i++)
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          selectedRating = i;
-                                        });
-                                      },
-                                      child: Icon(
-                                        Icons.star,
-                                        color: i <= selectedRating
-                                            ? Colors.amber
-                                            : Colors.grey,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                  child: const Center(
+                    child: Text(
+                      'PRODUCT REVIEW',
+                      style: TextStyle(
+                        fontFamily: "Roboto",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xff000000),
                       ),
-                      Container(
-                        height: 118,
-                        width: 500,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: const Color(0xFFD6D6D6)),
-                        ),
+                    ),
+                  ),
+                ),
+              ),
+              content: Container(
+                width: dialogWidth,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: 16.0,
+                          ),
+                          child: Container(
+                            color: Colors.white,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                for (int i = 1; i <= 5; i++)
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedRating = i;
+                                      });
+                                    },
+                                    child: Icon(
+                                      Icons.star,
+                                      color: i <= selectedRating
+                                          ? Colors.amber
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Container(
+                      height: 130,
+                      width: 500,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: const Color(0xFFD6D6D6)),
+                      ),
+                      child: Form(
+                        key: _formKey,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: TextFormField(
-                            controller: commentsController,
-                            maxLines: 3,
-                            textInputAction: TextInputAction.newline,
-                            decoration: const InputDecoration(
-                              hintText: 'Comments:',
-                              hintStyle: TextStyle(color: Colors.green),
-                              border: InputBorder.none,
-                            ),
+                          child: Column(
+                            children: [
+                              
+                              TextFormField(
+                                controller: commentsController,
+                                maxLines: 3,
+                                textInputAction: TextInputAction.newline,
+                                decoration: const InputDecoration(
+                                  hintText: 'Comments:',
+                                  hintStyle: TextStyle(color: Colors.green),
+                                  border: InputBorder.none,
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter comments';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              // Hiển thị thông báo lỗi
+                              // if (_formKey.currentState?.validate() == false)
+                              //   const Text(
+                              //     'Please enter comments',
+                              //     style: TextStyle(
+                              //       color: Colors.red,
+                              //     ),
+                              //   ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                actions: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 117,
-                        height: 39,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color(0xff5bb85d),
-                        ),
-                        child: TextButton(
-                          onPressed: () async {
-                            print("In send code");
+              ),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 117,
+                      height: 39,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color(0xff5bb85d),
+                      ),
+                      child: TextButton(
+                        onPressed: () async {
+                          // Kiểm tra xem có lỗi không trước khi gửi
+                          if (_formKey.currentState?.validate() == true) {
                             await _sendBtn(widget.id);
                             // ignore: use_build_context_synchronously
                             Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'Send',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                          }
+                        },
+                        child: const Text(
+                          'Send',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      Container(
-                        width: 117,
-                        height: 39,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.red,
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                    ),
+                    Container(
+                      width: 117,
+                      height: 39,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.red,
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        ),
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
