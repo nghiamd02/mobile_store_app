@@ -23,7 +23,7 @@ class Product {
   final List<Seri>? series;
   final List<ColorDTO>? colors;
   final List<Memory>? memories;
-  final List<Content>? reviews;
+  final List<ContentReview>? reviews;
   final List<Image>? images;
 
   Product(
@@ -64,8 +64,8 @@ class Product {
             json["colorDTOs"].map((e) => ColorDTO.fromJson(e)).toList()),
         memories: List<Memory>.from(
             json["memoryDTOs"].map((e) => Memory.fromJson(e)).toList()),
-        reviews: List<Content>.from(
-            json["reviewDTOs"].map((e) => Content.fromJson(e)).toList()),
+        reviews: List<ContentReview>.from(
+            json["reviewDTOs"].map((e) => ContentReview.fromJson(e)).toList()),
         images: List<Image>.from(
             json["imageDTOs"].map((e) => Image.fromJson(e)).toList()),
         name: json["name"]);

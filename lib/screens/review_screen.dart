@@ -57,7 +57,7 @@ class __ReviewScreenState extends State<_ReviewScreen> {
     final int rating = selectedRating;
     final String comment = commentsController.text;
 
-    final content = Content(
+    final content = ContentReview(
       productId: 6,
       comment: comment,
       rating: rating,

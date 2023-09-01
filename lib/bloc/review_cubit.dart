@@ -9,7 +9,7 @@ class ReviewCubit extends Cubit<ReviewState>{
 
   ReviewCubit (this._repository) :super(InitialReviewState());
 
-  Future<void> createReview(Content content) async{
+  Future<void> createReview(ContentReview content) async{
     emit(LoadingReviewState());
     try{
       var result = await _repository.createReview(content);

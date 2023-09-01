@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class ReviewResponse {
-  final List<Content> contents;
+  final List<ContentReview> contents;
   final int totalPages;
   final int totalItems;
   final int limit;
@@ -22,8 +22,8 @@ class ReviewResponse {
   factory ReviewResponse.fromJson(Map<String, dynamic> json) {
     final List<dynamic> contentsJson = json['contents'];
 
-    List<Content> contents = contentsJson
-        .map((dynamic contentJson) => Content.fromJson(contentJson))
+    List<ContentReview> contents = contentsJson
+        .map((dynamic contentJson) => ContentReview.fromJson(contentJson))
         .toList();
 
     return ReviewResponse(
@@ -38,7 +38,7 @@ class ReviewResponse {
   }
 }
 
-class Content {
+class ContentReview {
   final int? id;
   final String? userName;
   final int? productId;
@@ -46,7 +46,7 @@ class Content {
   final int? rating;
   final bool? status;
 
-  Content(
+  ContentReview(
       {this.id = 0,
       this.userName = 'Minh',
       required this.productId,
@@ -54,8 +54,8 @@ class Content {
       required this.rating,
       required this.status});
 
-  factory Content.fromJson(Map<String, dynamic> json) {
-    return Content(
+  factory ContentReview.fromJson(Map<String, dynamic> json) {
+    return ContentReview(
         id: json['id'],
         userName: json['user_name'],
         productId: json['product_id'],
