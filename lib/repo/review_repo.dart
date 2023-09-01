@@ -16,36 +16,36 @@ class ReviewRepository {
 
   //create review
   Future<String> createReview(Content content) async {
-  final uri = Uri.parse(url);
-  final headers = {
-    'Authorization': 'Bearer $bearerToken',
-    'Content-Type': 'application/json', 
-  };
-  
-  final requestBody = {
-    'product_id': content.productId,
-    'comment': content.comment,
-    'rating': content.rating,
-    'status': content.status,
-  };
+    final uri = Uri.parse(url);
+    final headers = {
+      'Authorization': 'Bearer $bearerToken',
+      'Content-Type': 'application/json',
+    };
 
-  
-  final response = await http.post(
-    uri,
-    headers: headers,
-    body: jsonEncode(requestBody), 
-  );
-  
-  if (response.statusCode == statusCode201) {
-    final decodedBody = jsonDecode(response.body);
-    return decodedBody['message'] ?? '';
+    final requestBody = {
+      'product_id': content.productId,
+      'comment': content.comment,
+      'rating': content.rating,
+      'status': content.status,
+    };
+
+    final response = await http.post(
+      uri,
+      headers: headers,
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == statusCode201) {
+      final decodedBody = jsonDecode(response.body);
+      return decodedBody['message'] ?? '';
+    }
+
+    throw Exception('Failed to create review ${response.statusCode}');
   }
-  
-  throw Exception('Failed to create review ${response.statusCode}');
-}
 
 //Get review by product_id
-Future<ReviewResponse> getAllPromotionsById(int no, int limit, int idProduct) async {
+  Future<ReviewResponse> getAllPromotionsById(
+      int no, int limit, int idProduct) async {
     final uri = Uri.parse("$url/$idProduct?no=$no&limit=$limit");
     final response = await http.get(uri);
 
@@ -55,5 +55,4 @@ Future<ReviewResponse> getAllPromotionsById(int no, int limit, int idProduct) as
 
     throw Exception('Failed to load promotion data ${response.statusCode}');
   }
-
 }

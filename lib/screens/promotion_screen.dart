@@ -98,17 +98,17 @@ class __PromotionPageState extends State<_PromotionPage> {
                                     padding: const EdgeInsets.all(10.0),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           children: [
                                             SizedBox(
                                               width:
-                                                  50, // Đặt kích thước cố định cho hình lục giác
+                                              50, // Đặt kích thước cố định cho hình lục giác
                                               height:
-                                                  50, // Đặt kích thước cố định cho hình lục giác
+                                              50, // Đặt kích thước cố định cho hình lục giác
                                               child: CustomPaint(
                                                 painter: _HexagonPainter(),
                                                 child: Center(
@@ -117,7 +117,7 @@ class __PromotionPageState extends State<_PromotionPage> {
                                                     style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                     ),
                                                   ),
                                                 ),
@@ -127,7 +127,7 @@ class __PromotionPageState extends State<_PromotionPage> {
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     '${promotion.discount}% discount for orders under \$${promotion.maxGet.toStringAsFixed(0)}, for customers who bought \$${promotion.totalPurchase.toStringAsFixed(0)}',
@@ -136,7 +136,7 @@ class __PromotionPageState extends State<_PromotionPage> {
                                                       fontFamily: "Inter",
                                                       fontSize: 12,
                                                       fontWeight:
-                                                          FontWeight.w300,
+                                                      FontWeight.w300,
                                                       color: Color(0xff979595),
                                                     ),
                                                   ),
@@ -147,7 +147,7 @@ class __PromotionPageState extends State<_PromotionPage> {
                                                       fontFamily: "Inter",
                                                       fontSize: 12,
                                                       fontWeight:
-                                                          FontWeight.w300,
+                                                      FontWeight.w300,
                                                       color: Color(0xff979595),
                                                     ),
                                                   ),
@@ -185,7 +185,7 @@ class __PromotionPageState extends State<_PromotionPage> {
                                   return Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children:
-                                        List.generate(totalPages, (index) {
+                                    List.generate(totalPages, (index) {
                                       return ElevatedButton(
                                         onPressed: () {
                                           _changePage(index);

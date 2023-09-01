@@ -39,12 +39,12 @@ class ReviewResponse {
 }
 
 class Content {
-  final int id;
-  final String userName;
-  final int productId;
-  final String comment;
-  final int rating;
-  final bool status;
+  final int? id;
+  final String? userName;
+  final int? productId;
+  final String? comment;
+  final int? rating;
+  final bool? status;
 
   Content(
       {this.id = 0,

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
 import 'package:mobile_store_app/models/address.dart';
 import 'package:mobile_store_app/repo/user_repo.dart';
@@ -17,7 +16,9 @@ class AddressRepository {
       HttpHeaders.authorizationHeader: "Bearer $userToken"
     });
     if (response.statusCode == 200) {
-      return _parseJsonList(response.body);
+      List json = jsonDecode(response.body);
+      final result = json.map((e) => Address.fromJson(e)).toList();
+      return result;
     } else {
       throw Exception('Failed to load data');
     }
