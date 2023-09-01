@@ -4,9 +4,9 @@ import 'package:mobile_store_app/models/memory.dart';
 import 'package:mobile_store_app/models/product_tech.dart';
 import 'package:mobile_store_app/models/review.dart';
 import 'package:mobile_store_app/models/seri.dart';
-
 import 'category.dart';
 import 'manufacturer.dart';
+import 'dart:convert' as utf8;
 
 class Product {
   final int? id;

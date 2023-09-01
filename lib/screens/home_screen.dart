@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile_store_app/bloc/home_cubit.dart';
+
 import 'package:mobile_store_app/screens/search_bar.dart';
 import 'package:mobile_store_app/widget/bottom_navigation.dart';
 import 'package:mobile_store_app/widget/text_format/subtitle_text.dart';
@@ -33,6 +35,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final homeCubit = HomeCubit(HomeRepository());
   late final Product product;
+  final numberFormat = NumberFormat.decimalPattern('vi_VN');
 
   @override
   void initState() {
@@ -164,7 +167,8 @@ class _HomePageState extends State<HomePage> {
                             size: 12,
                           ),
                           Subtitle(
-                            text: product.price.toString() + " VND",
+                            text:
+                                "${numberFormat.format(product.price?.toInt())} VND",
                             size: 15,
                           ),
                           const SizedBox(

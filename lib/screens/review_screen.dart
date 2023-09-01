@@ -67,169 +67,169 @@ class __ReviewScreenState extends State<_ReviewScreen> {
   }
 
   Widget _listReviews() {
-  return Container(
-    color: const Color.fromRGBO(224, 234, 235, 1),
-    child: SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 200,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.95,
-            height: MediaQuery.of(context).size.height * 0.65,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(8),
-                bottomRight: Radius.circular(8),
-              ),
+    return Container(
+      color: const Color.fromRGBO(224, 234, 235, 1),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 200,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "Review of customer bought the product",
-                  style: TextStyle(
-                    fontFamily: "Inter",
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff000000),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.95,
+              height: MediaQuery.of(context).size.height * 0.65,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(8),
+                  bottomRight: Radius.circular(8),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Review of customer bought the product",
+                    style: TextStyle(
+                      fontFamily: "Inter",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff000000),
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Expanded(
-                  child: BlocProvider.value(
-                    value: reviewCubit,
-                    child: BlocBuilder<ReviewCubit, ReviewState>(
-                      builder: (context, state) {
-                        if (state is InitialReviewState ||
-                            state is LoadingReviewState) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (state is SuccessLoadingReviewState) {
-                          final contents = state.reviewResponse.contents;
-                          return ListView.builder(
-                            itemCount: contents.length,
-                            itemBuilder: (context, index) {
-                              final content = contents[index];
-                              return Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width:
-                                              150, // Đặt kích thước cố định cho hình lục giác
-                                          height:
-                                              30, // Đặt kích thước cố định cho hình lục giác
-                                          child: Text(
-                                            content.userName,
-                                            style: const TextStyle(
-                                              fontFamily: "Inter",
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w400,
-                                              color: Color(0xff000000),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                    child: BlocProvider.value(
+                      value: reviewCubit,
+                      child: BlocBuilder<ReviewCubit, ReviewState>(
+                        builder: (context, state) {
+                          if (state is InitialReviewState ||
+                              state is LoadingReviewState) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (state is SuccessLoadingReviewState) {
+                            final contents = state.reviewResponse.contents;
+                            return ListView.builder(
+                              itemCount: contents.length,
+                              itemBuilder: (context, index) {
+                                final content = contents[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width:
+                                                150, // Đặt kích thước cố định cho hình lục giác
+                                            height:
+                                                30, // Đặt kích thước cố định cho hình lục giác
+                                            child: Text(
+                                              content.userName!,
+                                              style: const TextStyle(
+                                                fontFamily: "Inter",
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xff000000),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: List.generate(
-                                                  content.rating,
-                                                  (index) => const Icon(
-                                                    Icons.star,
-                                                    color: Colors.orange,
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: List.generate(
+                                                    content.rating!,
+                                                    (index) => const Icon(
+                                                      Icons.star,
+                                                      color: Colors.orange,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Text(
-                                                content.comment,
-                                                style: const TextStyle(
-                                                  fontFamily: "Inter",
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Color(0xff000000),
+                                                Text(
+                                                  content.comment!,
+                                                  style: const TextStyle(
+                                                    fontFamily: "Inter",
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Color(0xff000000),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        } else if (state is FailureReviewState) {
-                          return Center(
-                            child: Text(state.errorMessage),
-                          );
-                        }
-                        return Container();
-                      },
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          } else if (state is FailureReviewState) {
+                            return Center(
+                              child: Text(state.errorMessage),
+                            );
+                          }
+                          return Container();
+                        },
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BlocProvider.value(
-                        value: reviewCubit,
-                        child: BlocBuilder<ReviewCubit, ReviewState>(
-                          builder: (context, state) {
-                            if (state is SuccessLoadingReviewState) {
-                              totalPages = state.reviewResponse.totalPages;
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(totalPages, (index) {
-                                  return ElevatedButton(
-                                    onPressed: () {
-                                      _changePage(index);
-                                    },
-                                    child: Text((index + 1).toString()),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: index == currentPage
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                    ),
-                                  );
-                                }),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
-                      )
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BlocProvider.value(
+                          value: reviewCubit,
+                          child: BlocBuilder<ReviewCubit, ReviewState>(
+                            builder: (context, state) {
+                              if (state is SuccessLoadingReviewState) {
+                                totalPages = state.reviewResponse.totalPages;
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(totalPages, (index) {
+                                    return ElevatedButton(
+                                      onPressed: () {
+                                        _changePage(index);
+                                      },
+                                      child: Text((index + 1).toString()),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: index == currentPage
+                                            ? Colors.blue
+                                            : Colors.grey,
+                                      ),
+                                    );
+                                  }),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   void _showNotySuccess() {
     showDialog(

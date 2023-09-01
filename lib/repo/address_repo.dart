@@ -16,7 +16,9 @@ class AddressRepository {
       HttpHeaders.authorizationHeader: "Bearer $userToken"
     });
     if (response.statusCode == 200) {
-      return _parseJsonList(response.body);
+      List json = jsonDecode(response.body);
+      final result = json.map((e) => Address.fromJson(e)).toList();
+      return result;
     } else {
       throw Exception('Failed to load data');
     }

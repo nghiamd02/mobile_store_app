@@ -1,3 +1,5 @@
+import 'package:mobile_store_app/models/cart.dart';
+
 import '../models/address.dart';
 
 abstract class CartState {}
@@ -16,11 +18,16 @@ class ResponseAddressState extends CartState {
   ResponseAddressState(this.address);
 }
 
-abstract class CounterState{}
+class ResponseCart extends CartState {
+  final List<Cart> cart;
+  ResponseCart(this.cart);
+}
 
-class LoadingCounterState extends CounterState{}
+abstract class CounterState {}
 
-class SuccessCounterState extends CounterState{
+class LoadingCounterState extends CounterState {}
+
+class SuccessCounterState extends CounterState {
   int count = 0;
   SuccessCounterState(this.count);
 }
