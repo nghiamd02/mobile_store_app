@@ -20,7 +20,7 @@ class UserRepository {
         .post(uri, body: body, headers: {"Content-Type": "application/json"});
     if (response.statusCode == 201) {
       var data = jsonDecode(response.body);
-      await saveUserInfo(data['token'], username, data['idUser']);
+      await saveUserInfo(data['token'], username, data['idUser'], password);
     }
 
     return response.statusCode;
@@ -78,6 +78,25 @@ class UserRepository {
     return response.statusCode;
   }
 
+  Future<int> changePassword(String oldPassword, String newPassword) async {
+    const url = "$APIURL/user/change-password-by-token";
+    final uri = Uri.parse(url);
+    final userToken = await getToken();
+    final body =
+        jsonEncode({"newPassword": newPassword, "oldPassword": oldPassword});
+
+    final response = await http.put(uri, body: body, headers: {
+      HttpHeaders.authorizationHeader: "Bearer $userToken",
+      HttpHeaders.contentTypeHeader: "application/json"
+    });
+
+    if (response.statusCode == 200) {
+      return 200;
+    } else {
+      throw Exception("Failed to change password");
+    }
+  }
+
   Future<int> activeUser(String? email) async {
     final url = "$APIURL/mail/active-user?email=$email";
     final uri = Uri.parse(url);
@@ -87,7 +106,7 @@ class UserRepository {
     return response.statusCode;
   }
 
-  saveUserInfo(token, username, idUser) async {
+  saveUserInfo(token, username, idUser, password) async {
     await _storage.write(
       key: "token",
       value: token,
@@ -100,6 +119,7 @@ class UserRepository {
       key: "idUser",
       value: idUser.toString(),
     );
+    await _storage.write(key: "userPassword", value: password);
   }
 
   //added by Nghia
@@ -135,6 +155,17 @@ class UserRepository {
     return val.toString();
   }
 
+  getUserPassword() async {
+    String? val = await _storage.read(key: "userPassword");
+    return val.toString();
+  }
+
+  Future<String> getUserFullName() async {
+    final userId = await getIdUser();
+    final user = await getUserById(userId);
+    return user["fullName"];
+  }
+
   //added by Nghia
   Future<Map<String, dynamic>> getUserById(String id) async {
     final url = "$APIURL/user/$id";
@@ -143,6 +174,7 @@ class UserRepository {
     final response = await http.get(uri, headers: {
       HttpHeaders.authorizationHeader: "Bearer $userToken",
     });
+    print(response.statusCode);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -151,21 +183,11 @@ class UserRepository {
   }
 
   //add by Nghia
-  Future<bool> updateUser(
-      {int? id,
-      String? email,
-      String? name,
-      String? birthDay,
-      int? gender}) async {
-    final url = "$APIURL/user/$id";
+  Future<bool> updateUser(Map<String, dynamic> updateUser) async {
+    final url = "$APIURL/user/${updateUser["id"]}";
     final uri = Uri.parse(url);
     final userToken = await getToken();
-    final body = jsonEncode({
-      "email": email,
-      "fullName": name,
-      "gender": gender,
-      "birthDat": birthDay,
-    });
+    final body = jsonEncode(updateUser);
     final response = await http.put(uri, body: body, headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $userToken"
@@ -180,6 +202,7 @@ class UserRepository {
 
   Future<void> setCurrentUser() async {
     String userId = await getIdUser();
+
     currentUser = await getUserById(userId);
   }
 }

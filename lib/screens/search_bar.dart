@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_store_app/repo/user_repo.dart';
 import 'package:mobile_store_app/screens/screen_login.dart';
 
 class CustomSearchBar extends StatefulWidget {
@@ -10,10 +11,12 @@ class CustomSearchBar extends StatefulWidget {
 
 class _CustomSearchBarState extends State<CustomSearchBar> {
   late TextEditingController _searchController;
+  final UserRepository _userRepository = UserRepository();
+  String? _userFullName;
+
   @override
   void initState() {
     super.initState();
-
     _searchController = TextEditingController();
   }
 
@@ -77,10 +80,18 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Tran Ky Anh - 0123456789',
-                        style: TextStyle(
-                            backgroundColor: Color.fromARGB(76, 158, 158, 158)),
+                      FutureBuilder(
+                        future: _userRepository.getUserFullName(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text("${snapshot.data}",
+                                style: const TextStyle(
+                                    backgroundColor:
+                                        Color.fromARGB(76, 158, 158, 158)));
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
                       ),
                       TextButton(
                           onPressed: () {

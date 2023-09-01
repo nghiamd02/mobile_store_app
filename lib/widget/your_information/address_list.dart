@@ -49,6 +49,31 @@ class _AddressListState extends State<AddressList> {
     );
   }
 
+  Future<int> updateAddress(Address address) async {
+    int statusCode = await addressCubit.updateAddress(address);
+    return statusCode;
+  }
+
+  void showMessageDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  int count = 0;
+                  Navigator.of(context).popUntil((_) => count++ >= 2);
+                  addressCubit.getAllAddresses();
+                },
+                child: const Text("Close"))
+          ],
+        );
+      },
+    );
+  }
+
   void showAddressFormDialog({Address? address}) {
     String? provinceSelected;
     String? districtSelected;
@@ -76,6 +101,7 @@ class _AddressListState extends State<AddressList> {
                       addressDataRepository.wards[districtSelected]![0];
                 } else {
                   List<String> dataLocation = address.location!.split(",");
+
                   provinceSelected = dataLocation[0].trim();
                   districtSelected = dataLocation[1].trim();
                   wardSelected = dataLocation[2].trim();
@@ -318,10 +344,10 @@ class _AddressListState extends State<AddressList> {
                                         TextFormField(
                                           onTapOutside: (event) {
                                             FocusScope.of(context)
-                                                .requestFocus(new FocusNode());
+                                                .requestFocus(FocusNode());
                                           },
                                           controller: detailsAddressController,
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               hintText: "Details",
                                               border: OutlineInputBorder()),
                                           onChanged: (value) {
@@ -335,20 +361,26 @@ class _AddressListState extends State<AddressList> {
                                                 detailAddress!;
                                           },
                                         ),
-                                        CheckboxListTile(
-                                            title: Text("Set default address"),
-                                            value: isChecked,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                isChecked = value!;
-                                              });
-                                            }),
+                                        address != null
+                                            ? CheckboxListTile(
+                                                title: const Text(
+                                                    "Set default address"),
+                                                value: isChecked,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    isChecked = value!;
+                                                  });
+                                                })
+                                            : const SizedBox(
+                                                height: 3,
+                                              ),
                                         ButtonBar(
                                           alignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             ElevatedButton(
                                                 onPressed: () async {
+                                                  String message = "";
                                                   String userId =
                                                       await _userRepository
                                                           .getIdUser();
@@ -362,12 +394,12 @@ class _AddressListState extends State<AddressList> {
                                                   switch (isChosenType) {
                                                     case 1:
                                                       {
-                                                        type = "home";
+                                                        type = "HOME";
                                                       }
                                                       break;
                                                     case 2:
                                                       {
-                                                        type = "work";
+                                                        type = "WORK";
                                                       }
                                                       break;
                                                   }
@@ -383,26 +415,43 @@ class _AddressListState extends State<AddressList> {
                                                             nameReceiver: user[
                                                                 "fullName"],
                                                             location: location,
-                                                            defaults: isChecked,
                                                             type: type,
                                                             phoneReceiver:
                                                                 "012345678");
 
-                                                    addressCubit.createAddress(
-                                                        newAddress);
+                                                    String response =
+                                                        await addressCubit
+                                                            .createAddress(
+                                                                newAddress);
+                                                    showMessageDialog(response);
                                                   } else {
                                                     address.setLocation =
                                                         location;
                                                     address.setDefaults =
                                                         isChecked;
+                                                    final code =
+                                                        await updateAddress(
+                                                            address);
 
-                                                    addressCubit
-                                                        .updateAddress(address);
+                                                    switch (code) {
+                                                      case 200:
+                                                        {
+                                                          message =
+                                                              "Successfull update";
+                                                        }
+                                                        break;
+                                                      case 401:
+                                                        {
+                                                          message =
+                                                              "Need at least 1 default location";
+                                                        }
+                                                    }
+
+                                                    showMessageDialog(message);
                                                   }
                                                   if (!mounted) {
                                                     return;
                                                   }
-                                                  Navigator.of(context).pop();
                                                 },
                                                 child: Text(address != null
                                                     ? "Update"
@@ -411,7 +460,7 @@ class _AddressListState extends State<AddressList> {
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                 },
-                                                child: Text("Close")),
+                                                child: const Text("Close")),
                                           ],
                                         )
                                       ],
@@ -446,7 +495,9 @@ class _AddressListState extends State<AddressList> {
         break;
       case "home":
       case "work":
+      case "office":
         {
+          print("in here");
           color = Colors.red;
         }
         break;
@@ -502,8 +553,8 @@ class _AddressListState extends State<AddressList> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       Widget defaultWidget;
-                      // Widget typeWidget =
-                      //     statusWidget(addressList[index].type!);
+                      Widget typeWidget =
+                          statusWidget(addressList[index].type!);
                       if (addressList[index].defaults!) {
                         defaultWidget = statusWidget("Defaults");
                       } else {
@@ -527,8 +578,17 @@ class _AddressListState extends State<AddressList> {
                                   style: const TextStyle(
                                       overflow: TextOverflow.clip),
                                 ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
                                 Row(
-                                  children: [defaultWidget],
+                                  children: [
+                                    defaultWidget,
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    typeWidget
+                                  ],
                                 )
                               ],
                             ),

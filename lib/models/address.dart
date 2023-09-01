@@ -16,11 +16,13 @@ class Address {
 
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
-        id: json["id"],
-        location: json["location"],
-        phoneReceiver: json["phoneReceiver"],
-        nameReceiver: json["nameReceiver"],
-        defaults: json["defaults"]);
+      id: json["id"],
+      location: json["location"],
+      phoneReceiver: json["phoneReceiver"],
+      nameReceiver: json["nameReceiver"],
+      defaults: json["defaults"],
+      type: json['type'],
+    );
   }
 
   set setStatus(String chosenType) {

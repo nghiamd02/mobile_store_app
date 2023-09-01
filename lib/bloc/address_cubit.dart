@@ -18,13 +18,12 @@ class AddressCubit extends Cubit<AddressState> {
     }
   }
 
-  Future<void> createAddress(Address address) async {
-    emit(LoadingAddressState());
-    try {
-      await _addressRepository.createAddress(address);
-      getAllAddresses();
-    } catch (e) {
-      emit(FailureAddressState(e.toString()));
+  Future<String> createAddress(Address address) async {
+    int statusCode = await _addressRepository.createAddress(address);
+    if (statusCode == 201) {
+      return "Successfull Added";
+    } else {
+      return "Failed to add";
     }
   }
 
@@ -38,13 +37,8 @@ class AddressCubit extends Cubit<AddressState> {
     }
   }
 
-  Future<void> updateAddress(Address address) async {
-    emit(LoadingAddressState());
-    try {
-      await _addressRepository.updateAddress(address);
-      getAllAddresses();
-    } catch (e) {
-      emit(FailureAddressState(e.toString()));
-    }
+  Future<int> updateAddress(Address address) async {
+    int statusCode = await _addressRepository.updateAddress(address);
+    return statusCode;
   }
 }

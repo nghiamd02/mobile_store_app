@@ -16,6 +16,9 @@ class _UserInformationState extends State<UserInformation> {
   final UserRepository _userRepository = UserRepository();
   String? phoneNumber;
   final _formKey = GlobalKey<FormState>();
+  final _passwordFormKey = GlobalKey<FormState>();
+  String newPassword = "";
+  String? oldPassword = "";
 
   @override
   void initState() {
@@ -23,9 +26,30 @@ class _UserInformationState extends State<UserInformation> {
     _userFuture = setUserData();
   }
 
+  void showMessageDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(message),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  int count = 0;
+                  Navigator.of(context).popUntil((_) => count++ >= 2);
+                },
+                child: const Text("Close"))
+          ],
+        );
+      },
+    );
+  }
+
   Future<bool> setUserData() async {
     await _userRepository.setCurrentUser();
     _currentUser = _userRepository.currentUser;
+
+    oldPassword = await _userRepository.getUserPassword();
     return true;
   }
 
@@ -37,10 +61,12 @@ class _UserInformationState extends State<UserInformation> {
           icon,
           color: Colors.green,
         ),
-        Text(
-          text,
-          style: Theme.of(context).textTheme.bodyMedium,
-          overflow: TextOverflow.ellipsis,
+        Flexible(
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.bodyMedium,
+            overflow: TextOverflow.ellipsis,
+          ),
         )
       ],
     );
@@ -48,7 +74,11 @@ class _UserInformationState extends State<UserInformation> {
 
   void _onSubmitEditForm() {
     if (_formKey.currentState!.validate()) {
-      print("Pass validate");
+      _formKey.currentState!.save();
+      print(_currentUser);
+
+      _userRepository.updateUser(_currentUser!);
+      showMessageDialog("Edit successfully");
     } else {
       print("Not pass validate");
     }
@@ -62,13 +92,11 @@ class _UserInformationState extends State<UserInformation> {
         dob = _currentUser!["birthDay"];
         return StatefulBuilder(
           builder: (context, setState) {
-            print("Rebuild Dialog");
-            print(dob);
             return Dialog(
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                height: 400,
+                height: 460,
                 child: Column(
                   children: [
                     const Text(
@@ -85,6 +113,31 @@ class _UserInformationState extends State<UserInformation> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
+                            TextFormField(
+                              initialValue: _currentUser!['email'],
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                label: Text("Email"),
+                              ),
+                              validator: (value) {
+                                final RegExp emailRegExp = RegExp(
+                                  r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                                );
+                                if (value == null || value.isEmpty) {
+                                  return "Needs to fill";
+                                }
+                                if (emailRegExp.hasMatch(value) == false) {
+                                  return "Invalid email";
+                                }
+                                return null;
+                              },
+                              onSaved: (newValue) {
+                                _currentUser!["email"] = newValue;
+                              },
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             TextFormField(
                               initialValue: _currentUser!["fullName"],
                               decoration: const InputDecoration(
@@ -110,7 +163,7 @@ class _UserInformationState extends State<UserInformation> {
                               keyboardType: TextInputType.none,
                               initialValue: dob,
                               decoration: InputDecoration(
-                                  label: Text(dob!),
+                                  label: const Text("Date of Birth"),
                                   border: const OutlineInputBorder(),
                                   suffixIcon: IconButton(
                                     icon: const Icon(
@@ -121,13 +174,16 @@ class _UserInformationState extends State<UserInformation> {
                                           initialDate: DateTime.now(),
                                           firstDate: DateTime(1900),
                                           lastDate: DateTime.now());
-                                      String selectedDate =
-                                          DateFormat.yMd().format(result!);
-                                      setState(
-                                        () {
-                                          dob = selectedDate;
-                                        },
-                                      );
+                                      if (result != null) {
+                                        String selectedDate =
+                                            DateFormat('dd-MM-yyyy')
+                                                .format(result);
+                                        setState(
+                                          () {
+                                            dob = selectedDate;
+                                          },
+                                        );
+                                      }
                                     },
                                   )),
                               validator: (value) {
@@ -154,6 +210,9 @@ class _UserInformationState extends State<UserInformation> {
                                 }
                                 return null;
                               },
+                              onSaved: (newValue) {
+                                phoneNumber = newValue;
+                              },
                             ),
                             const SizedBox(
                               height: 10,
@@ -163,7 +222,7 @@ class _UserInformationState extends State<UserInformation> {
                                     border: OutlineInputBorder(),
                                     label: Text("Gender")),
                                 value: _currentUser!["gender"],
-                                items: List.generate(3, (index) {
+                                items: List.generate(2, (index) {
                                   String content = "";
                                   switch (index) {
                                     case 0:
@@ -176,17 +235,14 @@ class _UserInformationState extends State<UserInformation> {
                                         content = "female";
                                       }
                                       break;
-                                    case 2:
-                                      {
-                                        content = "other";
-                                      }
-                                      break;
                                   }
 
                                   return DropdownMenuItem(
                                       value: index, child: Text(content));
                                 }),
-                                onChanged: (value) {}),
+                                onChanged: (value) {
+                                  _currentUser!["gender"] = value;
+                                }),
                             ButtonBar(
                               children: [
                                 ElevatedButton(
@@ -214,6 +270,133 @@ class _UserInformationState extends State<UserInformation> {
               ),
             );
           },
+        );
+      },
+    );
+  }
+
+  void _onSubmitChangePassword() async {
+    if (_passwordFormKey.currentState!.validate()) {
+      Future<int> passwordChangeFuture =
+          _userRepository.changePassword(oldPassword!, newPassword);
+      int statusCode = await passwordChangeFuture;
+
+      if (statusCode == 200) {
+        _passwordFormKey.currentState!.save();
+
+        showMessageDialog("Change successfully");
+      } else {
+        showMessageDialog("Failed to change your password");
+      }
+    } else {
+      print("failed");
+    }
+  }
+
+  void showChangePasswordDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+            height: 350,
+            child: Column(
+              children: [
+                const Text(
+                  "Change Password",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                    child: SingleChildScrollView(
+                  child: Form(
+                    key: _passwordFormKey,
+                    child: Column(children: [
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            label: Text("Old Password")),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Needs to fill";
+                          }
+
+                          if (value != oldPassword) {
+                            return "Invalid password";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            label: Text("New Password")),
+                        validator: (value) {
+                          final RegExp passwordRegExp = RegExp(
+                            r'^(?=.*[A-Z])(?=.*[0-9])(.{8,})$',
+                          );
+                          if (value == null || value.isEmpty) {
+                            return "Needs to fill";
+                          }
+                          if (!passwordRegExp.hasMatch(value)) {
+                            return "Must have at least 8 chars, 1 cap letter and 1 digit";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          newPassword = value;
+                        },
+                        onSaved: (newValue) {
+                          oldPassword = newValue;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            label: Text("Confirm New Password")),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Needs to fill";
+                          }
+                          if (value != newPassword) {
+                            return "Wrong value";
+                          }
+                          return null;
+                        },
+                      ),
+                      ButtonBar(
+                        children: [
+                          ElevatedButton(
+                            onPressed: _onSubmitChangePassword,
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green),
+                            child: const Text("Save"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red),
+                            child: const Text("Cancel"),
+                          )
+                        ],
+                      ),
+                    ]),
+                  ),
+                ))
+              ],
+            ),
+          ),
         );
       },
     );
@@ -251,9 +434,9 @@ class _UserInformationState extends State<UserInformation> {
                     )
                   ],
                 ),
-                inforRow(context,
-                    icon: Icons.phone,
-                    text: phoneNumber == null ? "Need fill" : "$phoneNumber"),
+                // inforRow(context,
+                //     icon: Icons.phone,
+                //     text: phoneNumber == null ? "Need fill" : "$phoneNumber"),
                 Row(
                   children: [
                     Expanded(
@@ -288,7 +471,7 @@ class _UserInformationState extends State<UserInformation> {
                         "Change password",
                         style: TextStyle(color: Colors.white, fontSize: 12),
                       ),
-                      onPressed: () {},
+                      onPressed: showChangePasswordDialog,
                     ))
               ],
             ),

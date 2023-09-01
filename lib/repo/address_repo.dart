@@ -27,7 +27,7 @@ class AddressRepository {
     return parsedList.map<Address>((json) => Address.fromJson(json)).toList();
   }
 
-  Future<Address> createAddress(Address address) async {
+  Future<int> createAddress(Address address) async {
     final uri = Uri.parse(addressUrl);
     final userToken = await _userRepository.getToken();
 
@@ -43,11 +43,7 @@ class AddressRepository {
       HttpHeaders.authorizationHeader: "Bearer $userToken",
     });
 
-    if (response.statusCode == 201) {
-      return Address.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception(response.body);
-    }
+    return response.statusCode;
   }
 
   Future<void> deleteAddress(String id) async {
@@ -66,7 +62,7 @@ class AddressRepository {
     }
   }
 
-  Future<Address> updateAddress(Address updatedAddress) async {
+  Future<int> updateAddress(Address updatedAddress) async {
     final url = "$addressUrl/update-address/${updatedAddress.id}";
 
     final userToken = await _userRepository.getToken();
@@ -76,7 +72,8 @@ class AddressRepository {
       "location": updatedAddress.location,
       "phoneReceiver": 012345678,
       "nameReceiver": updatedAddress.nameReceiver,
-      "defaults": updatedAddress.defaults
+      "defaults": updatedAddress.defaults,
+      "type": updatedAddress.type
     });
 
     final response = await http.put(uri, body: body, headers: {
@@ -84,12 +81,7 @@ class AddressRepository {
       HttpHeaders.contentTypeHeader: "application/json",
     });
 
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      return Address.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception("Failed to update address");
-    }
+    return response.statusCode;
   }
 
   Future<Address> getAddressById(Address address) async {
