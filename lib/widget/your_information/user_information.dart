@@ -23,10 +23,11 @@ class _UserInformationState extends State<UserInformation> {
   @override
   void initState() {
     super.initState();
+    print("rebuild user info");
     _userFuture = setUserData();
   }
 
-  void showMessageDialog(String message) {
+  void showMessageDialog(String message, {bool? update}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -75,7 +76,6 @@ class _UserInformationState extends State<UserInformation> {
   void _onSubmitEditForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print(_currentUser);
 
       _userRepository.updateUser(_currentUser!);
       showMessageDialog("Edit successfully");
@@ -407,7 +407,8 @@ class _UserInformationState extends State<UserInformation> {
     return FutureBuilder(
       future: _userFuture,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.done ||
+            snapshot.hasData) {
           return Container(
             color: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 6),
