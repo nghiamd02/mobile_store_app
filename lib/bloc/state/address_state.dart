@@ -1,0 +1,27 @@
+import 'package:mobile_store_app/models/address.dart';
+
+abstract class AddressState {}
+
+class InitialAddressState extends AddressState {}
+
+class LoadingAddressState extends AddressState {}
+
+class FailureAddressState extends AddressState {
+  final String errorMessage;
+  FailureAddressState(this.errorMessage);
+}
+
+class SuccessLoadingAddress extends AddressState {
+  final List<Address> addresses;
+  SuccessLoadingAddress(this.addresses);
+}
+
+class SuccessAddAddress extends AddressState {
+  final Address address;
+  SuccessAddAddress(this.address);
+}
+
+class SuccessUpdateAddress extends AddressState {
+  final Address updatedAddress;
+  SuccessUpdateAddress(this.updatedAddress);
+}
