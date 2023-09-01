@@ -18,12 +18,14 @@ class ReviewRepository {
   Future<String> createReview(ContentReview content) async {
     final uri = Uri.parse(url);
     final bearerToken = await _userRepository.getToken();
+    final userName = await _userRepository.getUsername();
     final headers = {
       'Authorization': 'Bearer $bearerToken',
       'Content-Type': 'application/json',
     };
 
     final requestBody = {
+      'user_name': userName,
       'product_id': content.productId,
       'comment': content.comment,
       'rating': content.rating,
@@ -51,7 +53,7 @@ class ReviewRepository {
     final response = await http.get(uri);
 
     if (response.statusCode == statusCode200) {
-      return ReviewResponse.fromJson(jsonDecode(response.body));
+      return ReviewResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     }
 
     throw Exception('Failed to load promotion data ${response.statusCode}');
