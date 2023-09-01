@@ -90,7 +90,7 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
                 Container(
                     width: 300,
-                    height: 493,
+                    height: 475,
                     child: Column(children: [
                       Container(
                         padding: const
@@ -272,6 +272,62 @@ class _ScreenRegisterState extends State<ScreenRegister> {
 
                     ])),
 
+                Container(
+                  width: 320,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 128, // Chiều rộng tối đa
+                        height: 0.5, // Chiều cao của đường kẻ
+                        decoration: BoxDecoration(
+                          color: Colors.grey, // Màu của đường kẻ
+                        ),
+                      ),
+                      Text(
+                        "or",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      Container(
+                        width: 128, // Chiều rộng tối đa
+                        height: 0.5, // Chiều cao của đường kẻ
+                        decoration: BoxDecoration(
+                          color: Colors.grey, // Màu của đường kẻ
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Container(
+                  padding: EdgeInsets.only(top: 8, bottom: 8),
+                  child: Text(
+                    "Register with",
+                    style: TextStyle(
+                        fontSize: 18,
+                        //fontFamily:
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey),
+                  ),
+                ),
+
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.facebook, // Tên của biểu tượng
+                        color: Colors.blue, // Màu của biểu tượng
+                        size: 35, // Kích thước của biểu tượng
+                      ),
+                      Icon(
+                        Icons.g_mobiledata_sharp, // Tên của biểu tượng
+                        color: Colors.red, // Màu của biểu tượng
+                        size: 35, // Kích thước của biểu tượng
+                      )
+                    ],
+                  ),
+                ),
 
 
                 Container(
@@ -458,7 +514,8 @@ class _ScreenRegisterState extends State<ScreenRegister> {
                       ),
                     ),
                   ),
-                    if (_isError == true)
+
+                  if (_isError == true)
                       Text( "Active user isn't successful"),
 
                   Center(
